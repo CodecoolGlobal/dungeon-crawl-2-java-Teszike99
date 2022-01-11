@@ -76,12 +76,11 @@ public class GameMap {
     private boolean checkMovePossible(int moveX, int moveY, Actor actor){
         Cell nextCell = actor.getCell().getNeighbor(moveX, moveY);
         CellType typeOfTile = nextCell.getType();
-        if (typeOfTile == CellType.FLOOR  || nextCell.getActor().getTileName().equals("skeleton")) {
+        if (typeOfTile == CellType.FLOOR && nextCell.getActor() == null) {
             actor.move(moveX, moveY);
             return false;
         }else {
             return true;
         }
     }
-
 }
