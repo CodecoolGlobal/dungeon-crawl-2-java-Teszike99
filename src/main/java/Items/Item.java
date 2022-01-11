@@ -1,0 +1,12 @@
+package Items;
+
+import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Drawable;
+
+public abstract class Item implements Drawable {
+    private Cell cell;
+
+    public Item(Cell cell) {
+        this.cell = cell;
+    }
+}

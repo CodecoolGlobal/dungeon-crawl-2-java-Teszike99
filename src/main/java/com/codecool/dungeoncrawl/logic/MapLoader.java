@@ -22,6 +22,8 @@ public class MapLoader {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);
                     switch (line.charAt(x)) {
+                        case 'k':
+                            cell.setType(CellType.FLOOR);
                         case ' ':
                             cell.setType(CellType.EMPTY);
                             break;
