@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import Items.Key;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 
@@ -24,6 +25,7 @@ public class MapLoader {
                     switch (line.charAt(x)) {
                         case 'k':
                             cell.setType(CellType.FLOOR);
+                            new Key(cell);
                         case ' ':
                             cell.setType(CellType.EMPTY);
                             break;
