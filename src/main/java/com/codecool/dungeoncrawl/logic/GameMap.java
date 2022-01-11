@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import javafx.scene.control.Alert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,7 @@ public class GameMap {
 
     public void moveActors(int x, int y) {
         checkMove(x,y,player);
+        checkItem(x,y,player);
         for (Skeleton oneEnemy : enemy){
             moveOneEnemy(oneEnemy);
         }
@@ -119,4 +121,19 @@ public class GameMap {
     private void gameOver() {
 
     }
+
+
+    private void checkItem(int x, int y, Actor actor){
+        Cell nextCell = actor.getCell();
+        if(nextCell.getItem() != null){
+            System.out.println("lol");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Press E to pick up item!");
+            alert.showAndWait();
+        }
+    }
 }
+
+
