@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 
@@ -42,6 +43,11 @@ public class GameMap {
     }
 
 
+    public Actor getPlayer() {
+        return player;
+    }
+
+
     public int getWidth() {
         return width;
     }
@@ -52,11 +58,30 @@ public class GameMap {
 
 
     public void moveActors(int x, int y) {
-        player.move(x,y);
+        checkMovePossible(x,y,player);
         for (Skeleton oneEnemy : enemy){
-            int randomX = rand.nextInt(-1,1);
-            int randomY = randomX != 0 ? 0 : -1;
-            oneEnemy.move(randomX, randomY);
+            moveOneEnemy(oneEnemy);
         }
     }
+
+    private void moveOneEnemy(Skeleton oneEnemy) {
+        boolean movingPossible = true;
+        while (movingPossible){
+            int randomX = rand.nextInt(-1,2);
+            int randomY = rand.nextInt(-1,2);
+            movingPossible = checkMovePossible(randomX, randomY, oneEnemy);
+        }
+    }
+
+    private boolean checkMovePossible(int moveX, int moveY, Actor actor){
+        Cell nextCell = actor.getCell().getNeighbor(moveX, moveY);
+        CellType typeOfTile = nextCell.getType();
+        if (typeOfTile == CellType.FLOOR  || nextCell.getActor().getTileName().equals("skeleton")) {
+            actor.move(moveX, moveY);
+            return false;
+        }else {
+            return true;
+        }
+    }
+
 }
