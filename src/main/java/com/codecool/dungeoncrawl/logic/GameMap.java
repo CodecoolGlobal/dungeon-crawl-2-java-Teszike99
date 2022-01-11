@@ -62,6 +62,7 @@ public class GameMap {
         for (Skeleton oneEnemy : enemy){
             moveOneEnemy(oneEnemy);
         }
+        player.getCell().setActor(player);
     }
 
     private void moveOneEnemy(Skeleton oneEnemy) {
@@ -89,9 +90,18 @@ public class GameMap {
     }
 
     private void attack(Actor enemy, int moveX, int moveY) {
-        if (player.getHealth() >= enemy.getHealth()){
+        if (enemy.getHealth() - 5 <= 0) {
             this.enemy.remove(enemy);
-            player.move(moveX, moveY);
+        }else if (player.getHealth() - 2 <= 0){
+            gameOver();
+        }else{
+            player.setHealth(player.getHealth() - 2);
+            enemy.setHealth(enemy.getHealth() - 5);
         }
+        player.move(moveX, moveY);
+    }
+
+    private void gameOver() {
+
     }
 }
