@@ -54,26 +54,18 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 map.moveActors(0,-1);
-                /*map.getPlayer().move(0, -1);
-                map.moveEnemy();*/
                 refresh();
                 break;
             case DOWN:
                 map.moveActors(0,1);
-                /*map.getPlayer().move(0, 1);
-                map.moveEnemy();*/
                 refresh();
                 break;
             case LEFT:
                 map.moveActors(-1,0);
-                /*map.getPlayer().move(-1, 0);
-                map.moveEnemy();*/
                 refresh();
                 break;
             case RIGHT:
                 map.moveActors(1,0);
-               /*map.getPlayer().move(1,0);
-                map.moveEnemy();*/
                 refresh();
                 break;
         }
