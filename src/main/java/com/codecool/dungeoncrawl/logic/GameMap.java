@@ -58,7 +58,7 @@ public class GameMap {
 
 
     public void moveActors(int x, int y) {
-        checkMovePossible(x,y,player);
+        checkMove(x,y,player);
         for (Skeleton oneEnemy : enemy){
             moveOneEnemy(oneEnemy);
         }
@@ -69,18 +69,29 @@ public class GameMap {
         while (movingPossible){
             int randomX = rand.nextInt(-1,2);
             int randomY = rand.nextInt(-1,2);
-            movingPossible = checkMovePossible(randomX, randomY, oneEnemy);
+            movingPossible = checkMove(randomX, randomY, oneEnemy);
         }
     }
 
-    private boolean checkMovePossible(int moveX, int moveY, Actor actor){
+    private boolean checkMove(int moveX, int moveY, Actor actor){
         Cell nextCell = actor.getCell().getNeighbor(moveX, moveY);
         CellType typeOfTile = nextCell.getType();
-        if (typeOfTile == CellType.FLOOR && nextCell.getActor() == null) {
+        Actor enemy = nextCell.getActor();
+        if (typeOfTile == CellType.FLOOR && enemy == null) {
             actor.move(moveX, moveY);
+            return false;
+        }else if (typeOfTile == CellType.FLOOR && enemy.getTileName().equals("skeleton") && actor.equals(player)) {
+            attack(enemy, moveX, moveY);
             return false;
         }else {
             return true;
+        }
+    }
+
+    private void attack(Actor enemy, int moveX, int moveY) {
+        if (player.getHealth() >= enemy.getHealth()){
+            this.enemy.remove(enemy);
+            player.move(moveX, moveY);
         }
     }
 }
