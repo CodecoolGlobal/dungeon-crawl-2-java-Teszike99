@@ -3,8 +3,6 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -17,18 +15,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.LinkedList;
-
-
 public class Main extends Application {
-    GameMap  map = MapLoader.loadMap();
+    GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
-    Label inventoryLabel = new Label();
-
 
     public static void main(String[] args) {
         launch(args);
@@ -41,16 +34,15 @@ public class Main extends Application {
         ui.setPadding(new Insets(10));
 
         ui.add(new Label("Health: "), 0, 0);
-        ui.add(new Label("Items: "), 0, 3);
-
         ui.add(healthLabel, 1, 0);
-        ui.add(inventoryLabel, 1, 3);
 
         BorderPane borderPane = new BorderPane();
+
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
 
         Scene scene = new Scene(borderPane);
+        scene.getStylesheets().add("app.css");
         primaryStage.setScene(scene);
         refresh();
         scene.setOnKeyPressed(this::onKeyPressed);
@@ -61,31 +53,24 @@ public class Main extends Application {
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
-            case E:
-                map.pickUpItem();
-                break;
             case UP:
-                map.moveActors(0,-1);
-                /*map.getPlayer().move(0, -1);
-                map.moveEnemy();*/
+                map.getPlayer().move(0,-1);
+                map.moveEnemies();
                 refresh();
                 break;
             case DOWN:
-                map.moveActors(0,1);
-                /*map.getPlayer().move(0, 1);
-                map.moveEnemy();*/
+                map.getPlayer().move(0,1);
+                map.moveEnemies();
                 refresh();
                 break;
             case LEFT:
-                map.moveActors(-1,0);
-                /*map.getPlayer().move(-1, 0);
-                map.moveEnemy();*/
+                map.getPlayer().move(-1,0);
+                map.moveEnemies();
                 refresh();
                 break;
             case RIGHT:
-                map.moveActors(1,0);
-               /*\map.getPlayer().move(1,0);
-                map.moveEnemy();*/
+                map.getPlayer().move(1,0);
+                map.moveEnemies();
                 refresh();
                 break;
         }
@@ -110,27 +95,5 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
-
-            LinkedList playerInventory = map.getPlayer().getPlayerInventory();
-            int itemCounter = 0;
-            String newLabelText = "";
-            for(Object item : playerInventory){
-                itemCounter += 1;
-                if (itemCounter == 1){
-                    newLabelText += item.toString();
-                    inventoryLabel.setText(newLabelText);
-                }
-                else {
-                    itemCounter += 1;
-                    newLabelText += ", " + item;
-                    inventoryLabel.setText(newLabelText);
-                }
-
-
-        }
-
-
-
-
     }
 }
