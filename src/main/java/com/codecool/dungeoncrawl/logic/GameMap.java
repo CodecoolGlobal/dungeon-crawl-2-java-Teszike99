@@ -75,7 +75,7 @@ public class GameMap {
 
     public void moveActors(int x, int y) {
         checkMove(x,y,player);
-        checkItem(x,y,player);
+        checkItem(player);
         for (Skeleton oneEnemy : enemy){
             moveOneEnemy(oneEnemy);
         }
@@ -123,15 +123,34 @@ public class GameMap {
     }
 
 
-    private void checkItem(int x, int y, Actor actor){
+    private void checkItem(Actor actor){
         Cell nextCell = actor.getCell();
         if(nextCell.getItem() != null){
-            System.out.println("lol");
+            alertBox("Press E to pick up item");
+        }
+
+    }
+
+    private void alertBox(String alertMessage){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information Dialog");
             alert.setHeaderText(null);
-            alert.setContentText("Press E to pick up item!");
+            alert.setContentText(alertMessage);
             alert.showAndWait();
+        }
+
+
+
+    public void pickUpItem(){
+        try{
+            String item = getPlayer().getCell().getItem().getTileName();
+            System.out.println(item);
+            System.out.println(player);
+            player.inventoryAddItem(item);
+
+        }
+        catch (Exception e){
+            System.out.println("There is no item.");
         }
     }
 }

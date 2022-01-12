@@ -2,6 +2,8 @@ package Items;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 
 public abstract class Item implements Drawable {
     private Cell cell;
@@ -10,7 +12,6 @@ public abstract class Item implements Drawable {
         this.cell = cell;
         this.cell.setItem(this);
     }
-
 
 
 }
