@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 
 import Items.Key;
 import Items.Sword;
+import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 
@@ -47,6 +48,10 @@ public class MapLoader {
                         case 's':
                             cell.setType(CellType.FLOOR);
                             map.setEnemy(new Skeleton(cell));
+                            break;
+                        case 'g':
+                            cell.setType(CellType.FLOOR);
+                            map.setEnemy(new Ghost(cell));
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
