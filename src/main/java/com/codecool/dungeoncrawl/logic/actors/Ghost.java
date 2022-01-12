@@ -23,7 +23,12 @@ public class Ghost extends Enemy{
         getPositions();
         countDifferences();
         Cell nextCell = this.getCell().getNeighbor(moveX, moveY);
-        putActorOnMap(nextCell);
+        if (checkAttack(nextCell.getType(), this.getCell().getGameMap().getPlayer())){
+            attack(this);
+        }else{
+            putActorOnMap(nextCell);
+        }
+
     }
 
     private void getPositions() {
