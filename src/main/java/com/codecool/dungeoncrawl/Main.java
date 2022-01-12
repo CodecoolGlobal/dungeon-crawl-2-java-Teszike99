@@ -10,7 +10,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -29,7 +28,7 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
-    Boolean isNewItem;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -90,10 +89,6 @@ public class Main extends Application {
                 refresh();
                 break;
         }
-    }
-
-    public void setNewItem(Boolean bool){
-        this.isNewItem = bool;
     }
 
     private void refresh() {
