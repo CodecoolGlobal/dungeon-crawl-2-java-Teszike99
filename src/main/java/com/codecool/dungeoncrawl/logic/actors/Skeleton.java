@@ -7,19 +7,18 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import java.util.Random;
 
 
-public class Skeleton extends Actor {
+public class Skeleton extends Enemy {
     private static final Random rand = new Random();
     public Skeleton(Cell cell) {
         super(cell);
     }
-
 
     @Override
     public String getTileName() {
         return "skeleton";
     }
 
-
+    @Override
     public void move() {
         boolean movingPossible = true;
         Cell skeletonCell;
