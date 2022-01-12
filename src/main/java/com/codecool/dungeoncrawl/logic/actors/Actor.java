@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.GameMap;
 
 
 public abstract class Actor implements Drawable {
@@ -14,23 +15,18 @@ public abstract class Actor implements Drawable {
         this.cell.setActor(this);
     }
 
-    public boolean checkMove(int moveX, int moveY, Actor actor){
-        Cell nextCell = cell.getNeighbor(moveX, moveY);
-        CellType typeOfTile = nextCell.getType();
-        Actor enemy = nextCell.getActor();
-        if (typeOfTile == CellType.FLOOR && enemy == null) {
-            putActorOnMap(nextCell);
-            return false;
-        }else if (typeOfTile == CellType.FLOOR && enemy.getTileName().equals("skeleton") && actor.getTileName().equals("player")) {
-            attack(enemy);
-            putActorOnMap(nextCell);
-            return false;
-        }else {
-            return true;
-        }
+
+    public boolean checkEmptyField(CellType typeOfTile, Actor enemy){
+        return typeOfTile == CellType.FLOOR && enemy == null;
     }
 
-    private void putActorOnMap(Cell nextCell) {
+    public boolean checkAttack(CellType typeOfTile, Actor attackedActor, String nameOfAttackedActor, Actor attackingActor , String nameOfAttackingActor){
+        return typeOfTile == CellType.FLOOR &&
+                attackedActor.getTileName().equals(nameOfAttackedActor) &&
+                attackingActor.getTileName().equals(nameOfAttackingActor);
+    }
+
+    public void putActorOnMap(Cell nextCell) {
         cell.setActor(null);
         nextCell.setActor(this);
         cell = nextCell;
@@ -60,8 +56,9 @@ public abstract class Actor implements Drawable {
     public void attack(Actor enemy){
         Actor player = cell.getActor();
         if (enemy.getHealth() - 5 <= 0) {
-            enemy.setHealth(player.getHealth()-2);
-
+            player.setHealth(player.getHealth()-2);
+            cell.getGameMap().removeEnemy((Skeleton) enemy);
+            enemy.getCell().setActor(null);
         }else if (player.getHealth() - 2 <= 0){
             gameOver();
         }else{

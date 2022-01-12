@@ -56,8 +56,8 @@ public class GameMap {
 
     public void removeEnemy(Skeleton enemy){
         this.enemy.remove(enemy);
-
     }
+
 
     public int getWidth() {
         return width;
