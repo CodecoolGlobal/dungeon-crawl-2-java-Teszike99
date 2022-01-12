@@ -20,11 +20,6 @@ public abstract class Actor implements Drawable {
         return typeOfTile == CellType.FLOOR && enemy == null;
     }
 
-    public boolean checkAttack(CellType typeOfTile, Actor attackedActor, String nameOfAttackedActor, Actor attackingActor , String nameOfAttackingActor){
-        return typeOfTile == CellType.FLOOR &&
-                attackedActor.getTileName().equals(nameOfAttackedActor) &&
-                attackingActor.getTileName().equals(nameOfAttackingActor);
-    }
 
     public void putActorOnMap(Cell nextCell) {
         cell.setActor(null);

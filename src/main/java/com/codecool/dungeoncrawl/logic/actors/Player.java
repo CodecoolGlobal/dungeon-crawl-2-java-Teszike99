@@ -20,9 +20,15 @@ public class Player extends Actor {
         Actor enemy = nextCell.getActor();
         if (checkEmptyField(typeOfTile, enemy)) {
             putActorOnMap(nextCell);
-        }else if(checkAttack(typeOfTile, enemy, "skeleton", this, "player")) {
+        }else if(checkAttack(typeOfTile, enemy)) {
             attack(enemy);
         }else{ }
+    }
+
+    private boolean checkAttack(CellType typeOfTile, Actor enemy){
+        return typeOfTile == CellType.FLOOR &&
+                enemy.getTileName().equals("skeleton");
+
     }
 }
 

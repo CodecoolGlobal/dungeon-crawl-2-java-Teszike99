@@ -2,13 +2,13 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
-import com.codecool.dungeoncrawl.logic.GameMap;
-
 import java.util.Random;
 
 
 public class Skeleton extends Enemy {
+
     private static final Random rand = new Random();
+
     public Skeleton(Cell cell) {
         super(cell);
     }
@@ -36,7 +36,7 @@ public class Skeleton extends Enemy {
         }
         if (checkEmptyField(typeOfTile, player)){
             putActorOnMap(cellNextToSkeleton);
-        }else if(checkAttack(typeOfTile, player, "player", this, "skeleton")){
+        }else if(checkAttack(typeOfTile, player)){
             attack(player);
         }
     }
@@ -44,7 +44,7 @@ public class Skeleton extends Enemy {
     private boolean checkSkeletonMove(CellType typeOfTile, Actor player){;
         if (checkEmptyField(typeOfTile, player)) {
             return false;
-        }else if(checkAttack(typeOfTile, player, "player", this, "skeleton")) {
+        }else if(checkAttack(typeOfTile, player)) {
             return false;
         }else{
             return true;
