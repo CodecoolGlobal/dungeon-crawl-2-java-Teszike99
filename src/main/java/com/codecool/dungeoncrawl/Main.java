@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -37,12 +38,10 @@ public class Main extends Application {
         ui.add(healthLabel, 1, 0);
 
         BorderPane borderPane = new BorderPane();
-
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
 
         Scene scene = new Scene(borderPane);
-        scene.getStylesheets().add("app.css");
         primaryStage.setScene(scene);
         refresh();
         scene.setOnKeyPressed(this::onKeyPressed);
@@ -54,19 +53,19 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                map.moveActors(0,-1);
+                map.getPlayer().move(0, -1);
                 refresh();
                 break;
             case DOWN:
-                map.moveActors(0,1);
+                map.getPlayer().move(0, 1);
                 refresh();
                 break;
             case LEFT:
-                map.moveActors(-1,0);
+                map.getPlayer().move(-1, 0);
                 refresh();
                 break;
             case RIGHT:
-                map.moveActors(1,0);
+                map.getPlayer().move(1,0);
                 refresh();
                 break;
         }
@@ -75,19 +74,16 @@ public class Main extends Application {
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        int offsetX = map.getHeight()/2 + 7 - map.getPlayer().getX();
+        int offsetY = map.getWidth()/2  - 7 - map.getPlayer().getY();
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
+                    Tiles.drawTile(context, cell.getActor(), x + offsetX, y + offsetY);
+                } else {
+                    Tiles.drawTile(context, cell, x+offsetX, y+offsetY);
                 }
-                else if (cell.getItem() != null){
-                    Tiles.drawTile(context, cell.getItem(), x, y);
-                }
-                else {
-                    Tiles.drawTile(context, cell, x, y);
-                }
-
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
