@@ -28,6 +28,8 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label inventoryLabel = new Label();
+    Boolean isNewItem;
 
     public static void main(String[] args) {
         launch(args);
@@ -43,6 +45,7 @@ public class Main extends Application {
         ui.add(new Label("Items: "), 0, 3);
 
         ui.add(healthLabel, 1, 0);
+        ui.add(inventoryLabel, 1, 3);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
@@ -82,11 +85,15 @@ public class Main extends Application {
                 break;
             case RIGHT:
                 map.moveActors(1,0);
-               /*map.getPlayer().move(1,0);
+               /*\map.getPlayer().move(1,0);
                 map.moveEnemy();*/
                 refresh();
                 break;
         }
+    }
+
+    public void setNewItem(Boolean bool){
+        this.isNewItem = bool;
     }
 
     private void refresh() {
@@ -108,8 +115,27 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
-        LinkedList playerInventory = map.getPlayer().getPlayerInventory();
-        System.out.println(playerInventory);
+
+            LinkedList playerInventory = map.getPlayer().getPlayerInventory();
+            int itemCounter = 0;
+            String newLabelText = "";
+            for(Object item : playerInventory){
+                itemCounter += 1;
+                if (itemCounter == 1){
+                    newLabelText += item.toString();
+                    inventoryLabel.setText(newLabelText);
+                }
+                else {
+                    itemCounter += 1;
+                    newLabelText += ", " + item;
+                    inventoryLabel.setText(newLabelText);
+                }
+
+
+        }
+
+
+
 
     }
 }

@@ -22,6 +22,7 @@ public class Player extends Actor {
                     System.out.println("You alredy have this item!");
                 }
                 else {
+
                     playerInventory.add(item);
                 }
             }

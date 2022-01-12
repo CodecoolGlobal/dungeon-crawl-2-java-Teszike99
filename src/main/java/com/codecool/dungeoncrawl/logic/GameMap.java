@@ -145,13 +145,10 @@ public class GameMap {
     public void pickUpItem(){
         try{
             String item = getPlayer().getCell().getItem().getTileName();
-            System.out.println(item);
             if (item.equals(item)){
                  getPlayer().getCell().setItem(null);
-
             }
             player.inventoryAddItem(item);
-
         }
         catch (Exception e){
             System.out.println("There is no item.");
