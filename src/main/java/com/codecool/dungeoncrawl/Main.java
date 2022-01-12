@@ -38,6 +38,7 @@ public class Main extends Application {
         ui.add(healthLabel, 1, 0);
 
         BorderPane borderPane = new BorderPane();
+
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
 
@@ -53,19 +54,19 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(0, -1);
+                map.moveActors(0,-1);
                 refresh();
                 break;
             case DOWN:
-                map.getPlayer().move(0, 1);
+                map.moveActors(0,1);
                 refresh();
                 break;
             case LEFT:
-                map.getPlayer().move(-1, 0);
+                map.moveActors(-1,0);
                 refresh();
                 break;
             case RIGHT:
-                map.getPlayer().move(1,0);
+                map.moveActors(1,0);
                 refresh();
                 break;
         }
@@ -81,8 +82,12 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x + offsetX, y + offsetY);
-                } else {
-                    Tiles.drawTile(context, cell, x+offsetX, y+offsetY);
+                }
+                else if (cell.getItem() != null){
+                    Tiles.drawTile(context, cell.getItem(), x + offsetX, y + offsetY);
+                }
+                else {
+                    Tiles.drawTile(context, cell, x + offsetX, y + offsetY);
                 }
             }
         }
