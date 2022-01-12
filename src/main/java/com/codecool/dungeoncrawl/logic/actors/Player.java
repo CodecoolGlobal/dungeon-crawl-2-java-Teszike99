@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
+import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 
 import java.util.LinkedList;
@@ -18,16 +19,15 @@ public class Player extends Actor {
 
     public void inventoryAddItem(String item){
                 if(playerInventory.contains(item)){
-                    System.out.println(playerInventory);
+                    System.out.println("You alredy have this item!");
                 }
                 else {
                     playerInventory.add(item);
-                    System.out.println(playerInventory);
                 }
             }
 
 
-    public LinkedList<String> getPlayerInventory(){
+    public LinkedList getPlayerInventory(){
         return playerInventory;
     }
 }

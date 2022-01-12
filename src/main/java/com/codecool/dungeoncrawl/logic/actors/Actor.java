@@ -5,6 +5,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
+import java.util.LinkedList;
+
 public abstract class Actor implements Drawable {
     private Cell cell;
     private Boolean monster = false;
@@ -41,4 +43,5 @@ public abstract class Actor implements Drawable {
     public int getY() {
         return cell.getY();
     }
+
 }

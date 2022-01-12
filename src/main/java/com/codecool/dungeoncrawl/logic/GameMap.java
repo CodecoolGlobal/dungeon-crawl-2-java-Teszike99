@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import Items.Item;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
@@ -46,7 +47,7 @@ public class GameMap {
     }
 
 
-    public Actor getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 
@@ -145,7 +146,10 @@ public class GameMap {
         try{
             String item = getPlayer().getCell().getItem().getTileName();
             System.out.println(item);
-            System.out.println(player);
+            if (item.equals(item)){
+                 getPlayer().getCell().setItem(null);
+
+            }
             player.inventoryAddItem(item);
 
         }
