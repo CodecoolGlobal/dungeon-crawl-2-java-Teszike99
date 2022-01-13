@@ -10,7 +10,7 @@ public class LazyWitch extends Enemy{
 
     public LazyWitch(Cell cell) {
         super(cell);
-        health = 20;
+        health = 15;
     }
 
     @Override
@@ -20,7 +20,6 @@ public class LazyWitch extends Enemy{
 
     @Override
     public void move() {
-
     }
 
     @Override

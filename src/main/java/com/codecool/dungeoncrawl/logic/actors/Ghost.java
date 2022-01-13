@@ -11,7 +11,7 @@ public class Ghost extends Enemy{
 
     public Ghost(Cell cell) {
         super(cell);
-        health = 15;
+        health = 10;
     }
 
     @Override
