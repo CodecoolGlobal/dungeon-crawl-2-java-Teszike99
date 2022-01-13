@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class LazyWitch extends Enemy{
 
+    int strength = 3;
+
 
     public LazyWitch(Cell cell) {
         super(cell);
@@ -17,5 +19,10 @@ public class LazyWitch extends Enemy{
     @Override
     public void move() {
 
+    }
+
+    @Override
+    protected int getStrength() {
+        return strength;
     }
 }

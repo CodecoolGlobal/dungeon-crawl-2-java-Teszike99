@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class Skeleton extends Enemy {
 
+    int strength = 1;
     private static final Random rand = new Random();
 
     public Skeleton(Cell cell) {
@@ -29,6 +30,11 @@ public class Skeleton extends Enemy {
                 move(randomMove);
             }
         }
+    }
+
+    @Override
+    protected int getStrength() {
+        return strength;
     }
 
     private Cell getRandomMove() {

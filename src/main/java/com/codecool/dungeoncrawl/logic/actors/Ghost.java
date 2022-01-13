@@ -6,6 +6,7 @@ public class Ghost extends Enemy{
     Player player;
     int moveX;
     int moveY;
+    int strength = 2;
 
     public Ghost(Cell cell) {
         super(cell);
@@ -26,6 +27,11 @@ public class Ghost extends Enemy{
             move(nextCell);
         }
 
+    }
+
+    @Override
+    protected int getStrength() {
+        return strength;
     }
 
     private void getPositions() {

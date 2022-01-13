@@ -8,10 +8,18 @@ import java.util.LinkedList;
 
 public class Player extends Actor {
 
+    int strength;
+
     private LinkedList<String> playerInventory = new LinkedList<String>();
 
     public Player(Cell cell) {
         super(cell);
+        strength = 5;
+    }
+
+    @Override
+    protected int getStrength() {
+        return strength;
     }
 
     public String getTileName() {
@@ -20,14 +28,16 @@ public class Player extends Actor {
 
 
     public void inventoryAddItem(String item){
-                if(playerInventory.contains(item)){
-                    System.out.println("You alredy have this item!");
-                }
-                else {
-
-                    playerInventory.add(item);
-                }
-            }
+        if(playerInventory.contains(item)){
+            System.out.println("You alredy have this item!");
+        }
+        else {
+            playerInventory.add(item);
+        }
+        if (item.equals("sword")){
+            strength = 10;
+        }
+    }
 
 
     public LinkedList getPlayerInventory() {

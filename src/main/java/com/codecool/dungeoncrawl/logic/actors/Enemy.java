@@ -17,4 +17,5 @@ public abstract class Enemy extends Actor{
     }
 
 
+    protected abstract int getStrength();
 }

@@ -1,10 +1,16 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Enemy;
+
+import Items.Item;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import javafx.scene.control.Alert;
+import com.codecool.dungeoncrawl.logic.actors.Enemy;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -12,6 +18,7 @@ public class GameMap {
     private int width;
     private int height;
     private Cell[][] cells;
+    private static int currentLevel = 0;
 
     private Player player;
     private List<Enemy> enemy = new ArrayList<Enemy>();
@@ -66,8 +73,48 @@ public class GameMap {
         return height;
     }
 
+    public static void changeLevel(String status){
+        if (Objects.equals(status, "next")) {
+            currentLevel ++;
+        }
+        else {
+            currentLevel --;
+        }
+    }
+
+    public static int getCurrentLevel() {
+        return currentLevel;
+    }
 
 
+    private void checkItem(Actor actor){
+        Cell nextCell = actor.getCell();
+        if(nextCell.getItem() != null){
+            alertBox("Press E to pick up item");
+        }
+
+    }
+
+
+    private void alertBox(String alertMessage){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText(alertMessage);
+            alert.showAndWait();
+        }
+
+
+    public void pickUpItem(){
+        try{
+            String item = player.getCell().getItem().getTileName();
+            getPlayer().getCell().setItem(null);
+            player.inventoryAddItem(item);
+        }
+        catch (Exception e){
+            System.out.println("There is no item.");
+        }
+    }
 
     public void checkDeath(Enemy enemy) {
         if (enemy.getHealth() <= 0) {
@@ -81,3 +128,5 @@ public class GameMap {
     private void gameOver() {
     }
 }
+
+
