@@ -31,10 +31,10 @@ public class Tiles {
         tileMap.put("key", new Tile(16, 23));
         tileMap.put("uzi", new Tile(9, 31));
         tileMap.put("stairs", new Tile(30, 21));
-        tileMap.put("ghost", new Tile(26, 10));
+        tileMap.put("ghost", new Tile(11, 20));
         tileMap.put("car", new Tile(13, 23));
         tileMap.put("house", new Tile(4, 20));
-        tileMap.put("LazyWitch", new Tile(20,20));
+        tileMap.put("LazyWitch", new Tile(31,4));
         tileMap.put("cola", new Tile(26, 11));
         tileMap.put("closedDoor", new Tile(3, 3));
         tileMap.put("openDoor", new Tile(4, 4));
