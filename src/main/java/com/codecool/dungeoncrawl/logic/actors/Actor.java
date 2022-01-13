@@ -16,7 +16,7 @@ public abstract class Actor implements Drawable {
 
 
     public boolean checkEmptyField(CellType typeOfTile, Actor enemy){
-        return typeOfTile == CellType.FLOOR && enemy == null;
+        return (typeOfTile == CellType.FLOOR || typeOfTile == CellType.STAIRS) && enemy == null;
     }
 
 

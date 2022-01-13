@@ -3,6 +3,10 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+
+import com.codecool.dungeoncrawl.logic.actors.Actor;
+
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -14,14 +18,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import java.util.LinkedList;
+import java.util.Objects;
 
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    String level = "/map.txt";
+    GameMap map = MapLoader.loadMap(level);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label inventoryLabel = new Label();
+
 
     public static void main(String[] args) {
         launch(args);
@@ -34,10 +43,12 @@ public class Main extends Application {
         ui.setPadding(new Insets(10));
 
         ui.add(new Label("Health: "), 0, 0);
+        ui.add(new Label("Items: "), 0, 3);
+
         ui.add(healthLabel, 1, 0);
+        ui.add(inventoryLabel, 1, 3);
 
         BorderPane borderPane = new BorderPane();
-
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
 
@@ -53,6 +64,9 @@ public class Main extends Application {
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
+            case E:
+                map.pickUpItem();
+                break;
             case UP:
                 map.getPlayer().move(0,-1);
                 map.moveEnemies();
@@ -79,21 +93,56 @@ public class Main extends Application {
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
+        int centerX = (int) (canvas.getWidth() / (Tiles.TILE_WIDTH * 2));
+        int centerY = (int) (canvas.getHeight() / (Tiles.TILE_WIDTH * 2));
+        int offsetX = 0;
+        int offsetY = 0;
+        changeMap();
+        if (map.getPlayer().getX() > centerX) {
+            offsetX = map.getPlayer().getX() - centerX;
+        }
+        if (map.getPlayer().getY() > centerY) {
+            offsetY = map.getPlayer().getY() - centerY;
+        }
+        for (int x = 0; x + offsetX < map.getWidth(); x++) {
+            for (int y = 0; y + offsetY < map.getHeight(); y++) {
+                Cell cell = map.getCell(x + offsetX, y + offsetY);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                }
-                else if (cell.getItem() != null){
+                } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
-                }
-                else {
+                } else {
                     Tiles.drawTile(context, cell, x, y);
                 }
-
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+
+        LinkedList playerInventory = map.getPlayer().getPlayerInventory();
+        int itemCounter = 0;
+        String newLabelText = "";
+        for (Object item : playerInventory) {
+            itemCounter += 1;
+            if (itemCounter == 1) {
+                newLabelText += item.toString();
+                inventoryLabel.setText(newLabelText);
+            } else {
+                itemCounter += 1;
+                newLabelText += ", " + item;
+                inventoryLabel.setText(newLabelText);
+            }
+        }
+    }
+
+
+    private void changeMap() {
+        if (Objects.equals(map.getPlayer().getCell().getTileName(), "stairs") && GameMap.getCurrentLevel() ==0) {
+            map = MapLoader.loadMap("/map2.txt");
+            GameMap.changeLevel("next");
+        }
+        else if (GameMap.getCurrentLevel() == 1 && Objects.equals(map.getPlayer().getCell().getTileName(), "stairs")) {
+            map = MapLoader.loadMap("/map.txt");
+            GameMap.changeLevel("back");
+        }
     }
 }
