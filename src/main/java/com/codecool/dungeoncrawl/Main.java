@@ -154,15 +154,11 @@ public class Main extends Application {
 
 
     private void changeMap() {
-        if (Objects.equals(map.getPlayer().getCell().getTileName(), "stairs") && GameMap.getCurrentLevel() ==0) {
+        if (Objects.equals(map.getPlayer().getCell().getTileName(), "stairs")) {
             map = MapLoader.loadMap("/map2.txt");
-            GameMap.changeLevel("next");
-        }
-        else if (GameMap.getCurrentLevel() == 1 && Objects.equals(map.getPlayer().getCell().getTileName(), "stairs")) {
-            map = MapLoader.loadMap("/map.txt");
-            GameMap.changeLevel("back");
         }
     }
+
     private void checkLose() {
         Player player = map.getPlayer();
         if (map.checkPlayerDeath(player)) {
