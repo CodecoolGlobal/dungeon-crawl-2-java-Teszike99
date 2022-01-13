@@ -91,13 +91,13 @@ public class Main extends Application {
     }
 
     private void refresh() {
+        changeMap();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         int centerX = (int) (canvas.getWidth() / (Tiles.TILE_WIDTH * 2));
         int centerY = (int) (canvas.getHeight() / (Tiles.TILE_WIDTH * 2));
         int offsetX = 0;
         int offsetY = 0;
-        changeMap();
         if (map.getPlayer().getX() > centerX) {
             offsetX = map.getPlayer().getX() - centerX;
         }

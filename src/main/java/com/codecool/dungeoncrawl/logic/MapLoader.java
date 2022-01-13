@@ -1,5 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
+import Items.Car;
+import Items.House;
 import Items.Key;
 import Items.Sword;
 import com.codecool.dungeoncrawl.logic.actors.Ghost;
@@ -41,6 +43,14 @@ public class MapLoader {
                             break;
                         case '#':
                             cell.setType(CellType.WALL);
+                            break;
+                        case 'v':
+                            cell.setType(CellType.WALL);
+                            new Car(cell);
+                            break;
+                        case 'h':
+                            cell.setType(CellType.WALL);
+                            new House(cell);
                             break;
                         case '.':
                             cell.setType(CellType.FLOOR);
