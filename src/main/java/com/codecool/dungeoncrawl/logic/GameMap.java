@@ -94,7 +94,6 @@ public class GameMap {
         if(nextCell.getItem() != null){
             alertBox("Press E to pick up item");
         }
-
     }
 
 
