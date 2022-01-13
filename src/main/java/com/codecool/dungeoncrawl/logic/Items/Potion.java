@@ -11,6 +11,6 @@ public class Potion extends Item{
 
     @Override
     public String getTileName() {
-        return "potion";
+        return "cola";
     }
 }
