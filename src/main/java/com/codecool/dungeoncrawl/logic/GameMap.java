@@ -56,7 +56,9 @@ public class GameMap {
 
     public void moveEnemies(){
         for (Enemy oneEnemy : enemy){
-            oneEnemy.move();
+            if (removableEnemy != oneEnemy){
+                oneEnemy.move();
+            }
         }
         if (removableEnemy != null){
             this.enemy.remove(removableEnemy);
