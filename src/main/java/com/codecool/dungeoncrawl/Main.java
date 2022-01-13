@@ -67,6 +67,9 @@ public class Main extends Application {
             case E:
                 map.pickUpItem();
                 break;
+            case R:
+                map = MapLoader.loadMap("/map.txt");
+                break;
             case UP:
                 map.getPlayer().move(0,-1);
                 map.moveEnemies();
@@ -92,6 +95,7 @@ public class Main extends Application {
 
     private void refresh() {
         changeMap();
+        checkLose();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         int centerX = (int) (canvas.getWidth() / (Tiles.TILE_WIDTH * 2));
@@ -143,6 +147,12 @@ public class Main extends Application {
         else if (GameMap.getCurrentLevel() == 1 && Objects.equals(map.getPlayer().getCell().getTileName(), "stairs")) {
             map = MapLoader.loadMap("/map.txt");
             GameMap.changeLevel("back");
+        }
+    }
+    private void checkLose() {
+        Player player = map.getPlayer();
+        if (map.checkPlayerDeath(player)) {
+            map = MapLoader.loadMap("/lose.txt");
         }
     }
 }

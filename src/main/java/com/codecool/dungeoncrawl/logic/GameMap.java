@@ -119,16 +119,15 @@ public class GameMap {
         }
     }
 
-    public void checkDeath(Enemy enemy) {
+    public void checkEnemyDeath(Enemy enemy) {
         if (enemy.getHealth() <= 0) {
             this.removableEnemy= enemy;
             enemy.getCell().setActor(null);
-        }else if (player.getHealth() <= 0){
-            gameOver();
         }
     }
 
-    private void gameOver() {
+    public boolean checkPlayerDeath(Player player) {
+        return player.getHealth() <= 0;
     }
 }
 
