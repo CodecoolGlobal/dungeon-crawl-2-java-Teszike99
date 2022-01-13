@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -13,6 +14,7 @@ public class GameMap {
     private int width;
     private int height;
     private Cell[][] cells;
+    private static int currentLevel = 0;
 
     private Player player;
     private List<Skeleton> enemy = new ArrayList<Skeleton>();
@@ -56,6 +58,19 @@ public class GameMap {
         return height;
     }
 
+    public static void changeLevel(String status){
+        if (Objects.equals(status, "next")) {
+            currentLevel ++;
+        }
+        else {
+            currentLevel --;
+        }
+    }
+
+    public static int getCurrentLevel() {
+        return currentLevel;
+    }
+
 
     public void moveActors(int x, int y) {
         checkMove(x,y,player);
@@ -78,7 +93,7 @@ public class GameMap {
         Cell nextCell = actor.getCell().getNeighbor(moveX, moveY);
         CellType typeOfTile = nextCell.getType();
         Actor enemy = nextCell.getActor();
-        if (typeOfTile == CellType.FLOOR && enemy == null) {
+        if (typeOfTile == CellType.FLOOR ||typeOfTile == CellType.STAIRS && enemy == null) {
             actor.move(moveX, moveY);
             return false;
         }else if (typeOfTile == CellType.FLOOR && enemy.getTileName().equals("skeleton") && actor.equals(player)) {

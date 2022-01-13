@@ -16,8 +16,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    String level = "/map.txt";
+    GameMap map = MapLoader.loadMap(level);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -75,22 +78,42 @@ public class Main extends Application {
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        int offsetX = map.getHeight()/2 + 7 - map.getPlayer().getX();
-        int offsetY = map.getWidth()/2  - 7 - map.getPlayer().getY();
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
+        int centerX = (int) (canvas.getWidth() / (Tiles.TILE_WIDTH * 2));
+        int centerY = (int) (canvas.getHeight() / (Tiles.TILE_WIDTH * 2));
+        int offsetX = 0;
+        int offsetY = 0;
+        if (map.getPlayer().getX() > centerX){
+            offsetX = map.getPlayer().getX() - centerX;
+        }
+        if (map.getPlayer().getY() > centerY) {
+            offsetY = map.getPlayer().getY() - centerY;
+        }
+        for (int x = 0; x + offsetX < map.getWidth(); x++) {
+            for (int y = 0; y + offsetY < map.getHeight(); y++) {
+                Cell cell = map.getCell(x + offsetX, y + offsetY);
                 if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x + offsetX, y + offsetY);
+                    Tiles.drawTile(context, cell.getActor(), x , y );
                 }
                 else if (cell.getItem() != null){
-                    Tiles.drawTile(context, cell.getItem(), x + offsetX, y + offsetY);
+                    Tiles.drawTile(context, cell.getItem(), x , y );
                 }
                 else {
-                    Tiles.drawTile(context, cell, x + offsetX, y + offsetY);
+                    Tiles.drawTile(context, cell, x , y );
                 }
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+        changeMap();
+    }
+
+    private void changeMap() {
+        if (Objects.equals(map.getPlayer().getCell().getTileName(), "stairs") && GameMap.getCurrentLevel() ==0) {
+            map = MapLoader.loadMap("/map2.txt");
+            GameMap.changeLevel("next");
+        }
+        else if (GameMap.getCurrentLevel() == 1 && Objects.equals(map.getPlayer().getCell().getTileName(), "stairs")) {
+            map = MapLoader.loadMap("/map.txt");
+            GameMap.changeLevel("back");
+        }
     }
 }
