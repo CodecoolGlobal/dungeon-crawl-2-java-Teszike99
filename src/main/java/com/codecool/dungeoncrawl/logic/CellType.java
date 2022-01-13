@@ -1,7 +1,5 @@
 package com.codecool.dungeoncrawl.logic;
 
-import Items.OpenDoor;
-
 public enum CellType {
     EMPTY("empty"),
     FLOOR("floor"),

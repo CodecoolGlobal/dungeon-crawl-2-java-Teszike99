@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
-import Items.Door;
-import Items.Item;
+import com.codecool.dungeoncrawl.logic.Items.Door;
+import com.codecool.dungeoncrawl.logic.Items.Item;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 
 public class Cell implements Drawable {

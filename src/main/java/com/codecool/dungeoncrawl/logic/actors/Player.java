@@ -1,8 +1,7 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 
-import Items.Door;
-import Items.OpenDoor;
+import com.codecool.dungeoncrawl.logic.Items.Door;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 

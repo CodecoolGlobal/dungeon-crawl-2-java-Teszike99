@@ -1,7 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
-
-import Items.*;
+import com.codecool.dungeoncrawl.logic.Items.*;
 import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.LazyWitch;
 import com.codecool.dungeoncrawl.logic.actors.Player;

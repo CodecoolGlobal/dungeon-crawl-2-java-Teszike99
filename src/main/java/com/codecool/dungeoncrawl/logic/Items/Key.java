@@ -1,17 +1,17 @@
-package Items;
+package com.codecool.dungeoncrawl.logic.Items;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 
-public class Car extends Item {
+public class Key extends Item {
 
 
-    public Car(Cell cell) {
+    public Key(Cell cell) {
         super(cell);
     }
 
     @Override
     public String getTileName() {
-        return "car";
+        return "key";
     }
 
 }

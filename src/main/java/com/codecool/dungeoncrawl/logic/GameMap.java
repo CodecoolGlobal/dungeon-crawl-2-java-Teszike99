@@ -1,10 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 
-import Items.Item;
-import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
-import javafx.scene.control.Alert;
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
 
 

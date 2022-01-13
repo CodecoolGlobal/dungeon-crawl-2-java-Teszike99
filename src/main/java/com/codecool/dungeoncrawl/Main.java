@@ -136,18 +136,18 @@ public class Main extends Application {
         for (Object item : playerInventory) {
             itemCounter += 1;
             if (itemCounter == 1) {
-                newLabelText += item.toString();
+                newLabelText += "\n" + item.toString();
                 inventoryLabel.setText(newLabelText);
             } else {
                 itemCounter += 1;
-                newLabelText += ", " + item;
+                newLabelText += "\n" + item;
                 inventoryLabel.setText(newLabelText);
             }
         }
 
         Boolean isItem = map.getPlayer().checkItem();
         if (isItem == true){
-            alertLabel.setText("Press E");
+            alertLabel.setText("Press E!");
         }
         else {
             alertLabel.setText("");
