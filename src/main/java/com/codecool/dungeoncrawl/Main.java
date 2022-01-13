@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 
@@ -100,6 +101,7 @@ public class Main extends Application {
     private void refresh() {
         changeMap();
         checkLose();
+        checkWin();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         int centerX = (int) (canvas.getWidth() / (Tiles.TILE_WIDTH * 2));
@@ -152,6 +154,13 @@ public class Main extends Application {
         }
     }
 
+    private void checkWin() {
+        Player player = map.getPlayer();
+        if (player.getCell().getType() == CellType.GOAL){
+            map = MapLoader.loadMap("/win.txt");
+        }
+    }
+
 
     private void changeMap() {
         if (Objects.equals(map.getPlayer().getCell().getTileName(), "stairs")) {
@@ -165,4 +174,5 @@ public class Main extends Application {
             map = MapLoader.loadMap("/lose.txt");
         }
     }
+
 }

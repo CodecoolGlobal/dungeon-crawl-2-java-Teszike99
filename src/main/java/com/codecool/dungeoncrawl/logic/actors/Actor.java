@@ -14,7 +14,10 @@ public abstract class Actor implements Drawable {
     }
 
     public boolean checkEmptyField(CellType typeOfTile){
-        return typeOfTile == CellType.FLOOR || typeOfTile == CellType.STAIRS || typeOfTile == CellType.OPENDOOR;
+        return typeOfTile == CellType.FLOOR ||
+                typeOfTile == CellType.STAIRS ||
+                typeOfTile == CellType.OPENDOOR ||
+                typeOfTile == CellType.GOAL;
     }
 
     public void move(Cell nextCell) {
