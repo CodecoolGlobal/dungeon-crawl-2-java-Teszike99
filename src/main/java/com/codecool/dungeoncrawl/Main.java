@@ -65,7 +65,7 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case E:
-                map.pickUpItem();
+                map.getPlayer().pickUpItem();
                 break;
             case R:
                 map = MapLoader.loadMap("/map.txt");

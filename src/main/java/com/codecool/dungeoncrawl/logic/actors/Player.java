@@ -1,37 +1,19 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
+import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
+import javafx.scene.control.Alert;
 
 
 import java.util.LinkedList;
 
 public class Player extends Actor {
 
-    int strength;
-    private int health;
-
     private LinkedList<String> playerInventory = new LinkedList<String>();
 
     public Player(Cell cell) {
         super(cell);
-        strength = 5;
-        health = 15;
-    }
-
-    @Override
-    protected int getStrength() {
-        return strength;
-    }
-
-    @Override
-    public int getHealth() {
-        return health;
-    }
-
-    @Override
-    protected void setHealth(int newHealth) {
-        health = newHealth;
     }
 
     public String getTileName() {
@@ -40,18 +22,14 @@ public class Player extends Actor {
 
 
     public void inventoryAddItem(String item){
-        if(playerInventory.contains(item)){
-            System.out.println("You already have this item!");
-        }
-        else {
-            playerInventory.add(item);
-            if (item.equals("sword")){
-                strength = 10;
-            }else if(item.equals("potion")){
-                this.health += 10;
+                if(playerInventory.contains(item)){
+                    System.out.println("You already have this item!");
+                }
+                else {
+
+                    playerInventory.add(item);
+                }
             }
-        }
-    }
 
 
     public LinkedList getPlayerInventory() {
@@ -63,19 +41,52 @@ public class Player extends Actor {
         Cell nextCell = playerCell.getNeighbor(moveX, moveY);
         CellType typeOfTile = nextCell.getType();
         Actor enemy = nextCell.getActor();
-        if (checkEmptyField(typeOfTile)) {
-            if (checkAttack(enemy)) {
-                attack(enemy);
-            }else{
-                move(nextCell);
-            }
+
+        if (checkEmptyField(typeOfTile, enemy)) {
+            putActorOnMap(nextCell);
+        }else if(checkAttack(typeOfTile, enemy)) {
+            attack(enemy);
+        }
+        checkItem(this);
+
+    }
+
+    private boolean checkAttack(CellType typeOfTile, Actor enemy){
+        return typeOfTile == CellType.FLOOR &&
+                enemy.getTileName().equals("skeleton");
+    }
+
+
+    private void checkItem(Actor actor){
+        Cell nextCell = actor.getCell();
+        if(nextCell.getItem() != null){
+            alertBox("Press E to pick up item");
         }
 
     }
 
-    private boolean checkAttack(Actor enemy){
-        return enemy instanceof Enemy;
+    private void alertBox(String alertMessage){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText(alertMessage);
+        alert.showAndWait();
     }
+
+
+    public void pickUpItem(){
+        try{
+            String item = this.getCell().getItem().getTileName();
+            if (item.equals(item)){
+                this.getCell().setItem(null);
+            }
+            this.inventoryAddItem(item);
+        }
+        catch (Exception e){
+            System.out.println("There is no item.");
+        }
+    }
+
 }
 
 

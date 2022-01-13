@@ -10,7 +10,6 @@ import com.codecool.dungeoncrawl.logic.actors.Enemy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 
@@ -18,7 +17,6 @@ public class GameMap {
     private int width;
     private int height;
     private Cell[][] cells;
-    private static int currentLevel = 0;
 
     private Player player;
     private List<Enemy> enemy = new ArrayList<Enemy>();
@@ -56,14 +54,15 @@ public class GameMap {
 
     public void moveEnemies(){
         for (Enemy oneEnemy : enemy){
-            if (removableEnemy != oneEnemy){
-                oneEnemy.move();
-            }
+            oneEnemy.move();
         }
         if (removableEnemy != null){
             this.enemy.remove(removableEnemy);
-            removableEnemy = null;
         }
+    }
+
+    public void removeEnemy(Enemy enemy){
+        this.removableEnemy = enemy;
     }
 
 
@@ -75,60 +74,8 @@ public class GameMap {
         return height;
     }
 
-    public static void changeLevel(String status){
-        if (Objects.equals(status, "next")) {
-            currentLevel ++;
-        }
-        else {
-            currentLevel --;
-        }
-    }
-
-    public static int getCurrentLevel() {
-        return currentLevel;
-    }
 
 
-    private void checkItem(Actor actor){
-        Cell nextCell = actor.getCell();
-        if(nextCell.getItem() != null){
-            alertBox("Press E to pick up item");
-        }
-    }
-
-
-    private void alertBox(String alertMessage){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText(null);
-            alert.setContentText(alertMessage);
-            alert.showAndWait();
-        }
-
-
-    public void pickUpItem(){
-        try{
-            Item item = player.getCell().getItem();
-            if (item instanceof Item) {
-                getPlayer().getCell().setItem(null);
-                player.inventoryAddItem(item.getTileName());
-            }
-        }
-        catch (Exception e){
-            System.out.println("There is no item.");
-        }
-    }
-
-    public void checkEnemyDeath(Enemy enemy) {
-        if (enemy.getHealth() <= 0) {
-            this.removableEnemy= enemy;
-            enemy.getCell().setActor(null);
-        }
-    }
-
-    public boolean checkPlayerDeath(Player player) {
-        return player.getHealth() <= 0;
-    }
 }
 
 
