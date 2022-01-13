@@ -50,19 +50,9 @@ public abstract class Actor implements Drawable {
 
     public void attack(Actor enemy){
         Actor player = cell.getGameMap().getPlayer();
-        if (enemy.getHealth() - 5 <= 0) {
-            player.setHealth(player.getHealth()-2);
-            cell.getGameMap().removeEnemy((Enemy)enemy);
-            enemy.getCell().setActor(null);
-        }else if (player.getHealth() - 2 <= 0){
-            gameOver();
-        }else{
-            player.setHealth(player.getHealth() - 2);
-            enemy.setHealth(enemy.getHealth() - 5);
-        }
-    }
-
-    private void gameOver() {
+        player.setHealth(player.getHealth() - 2);
+        enemy.setHealth(enemy.getHealth() - 5);
+        cell.getGameMap().checkDeath((Enemy)enemy);
 
     }
 

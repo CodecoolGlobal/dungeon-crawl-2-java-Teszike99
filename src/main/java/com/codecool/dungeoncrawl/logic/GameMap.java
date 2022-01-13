@@ -53,11 +53,8 @@ public class GameMap {
         }
         if (removableEnemy != null){
             this.enemy.remove(removableEnemy);
+            removableEnemy = null;
         }
-    }
-
-    public void removeEnemy(Enemy enemy){
-        this.removableEnemy = enemy;
     }
 
 
@@ -72,4 +69,15 @@ public class GameMap {
 
 
 
+    public void checkDeath(Enemy enemy) {
+        if (enemy.getHealth() <= 0) {
+            this.removableEnemy= enemy;
+            enemy.getCell().setActor(null);
+        }else if (player.getHealth() <= 0){
+            gameOver();
+        }
+    }
+
+    private void gameOver() {
+    }
 }

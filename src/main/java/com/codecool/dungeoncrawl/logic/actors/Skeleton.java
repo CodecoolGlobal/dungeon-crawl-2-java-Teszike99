@@ -24,7 +24,7 @@ public class Skeleton extends Enemy {
         Actor player = randomMove.getActor();
         if (checkEmptyField(randomMove.getType())){
             if (checkAttack(player)){
-                attack(player);
+                attack(this);
             }else {
                 move(randomMove);
             }
