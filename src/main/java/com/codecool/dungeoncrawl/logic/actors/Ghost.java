@@ -7,9 +7,11 @@ public class Ghost extends Enemy{
     int moveX;
     int moveY;
     int strength = 2;
+    int health;
 
     public Ghost(Cell cell) {
         super(cell);
+        health = 15;
     }
 
     @Override
@@ -32,6 +34,16 @@ public class Ghost extends Enemy{
     @Override
     protected int getStrength() {
         return strength;
+    }
+
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    protected void setHealth(int newHealth) {
+        health = newHealth;
     }
 
     private void getPositions() {
