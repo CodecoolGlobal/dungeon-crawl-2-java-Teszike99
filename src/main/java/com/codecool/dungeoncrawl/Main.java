@@ -28,8 +28,10 @@ public class Main extends Application {
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
+    Label alertLabel = new Label();
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
+
 
 
     public static void main(String[] args) {
@@ -42,11 +44,13 @@ public class Main extends Application {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
 
-        ui.add(new Label("Health: "), 0, 0);
-        ui.add(new Label("Items: "), 0, 3);
+        ui.add(new Label("Health: "), 0, 3);
+        ui.add(new Label("Items: "), 0, 6);
 
-        ui.add(healthLabel, 1, 0);
-        ui.add(inventoryLabel, 1, 3);
+
+        ui.add(alertLabel, 0, 0);
+        ui.add(healthLabel, 1, 3);
+        ui.add(inventoryLabel, 1, 6);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
@@ -113,6 +117,8 @@ public class Main extends Application {
                 Cell cell = map.getCell(x + offsetX, y + offsetY);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
+                } else if (cell.getDoor() != null) {
+                    Tiles.drawTile(context, cell.getDoor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
                 } else {
@@ -135,6 +141,14 @@ public class Main extends Application {
                 newLabelText += ", " + item;
                 inventoryLabel.setText(newLabelText);
             }
+        }
+
+        Boolean isItem = map.getPlayer().checkItem();
+        if (isItem == true){
+            alertLabel.setText("Press E");
+        }
+        else {
+            alertLabel.setText("");
         }
     }
 

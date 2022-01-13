@@ -1,9 +1,8 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-import com.codecool.dungeoncrawl.Main;
+import Items.Door;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
-import javafx.scene.control.Alert;
 
 
 import java.util.LinkedList;
@@ -26,7 +25,6 @@ public class Player extends Actor {
                     System.out.println("You already have this item!");
                 }
                 else {
-
                     playerInventory.add(item);
                 }
             }
@@ -42,12 +40,17 @@ public class Player extends Actor {
         CellType typeOfTile = nextCell.getType();
         Actor enemy = nextCell.getActor();
 
-        if (checkEmptyField(typeOfTile, enemy)) {
+        if (Boolean.FALSE.equals(checkDoorCondition(moveX, moveY)) && !playerInventory.contains("key")) {
+            return;
+        }
+        else if (Boolean.TRUE.equals(checkDoorCondition(moveX, moveY))){
+            openDoor(nextCell);
+        }
+        else if (checkEmptyField(typeOfTile, enemy)) {
             putActorOnMap(nextCell);
         }else if(checkAttack(typeOfTile, enemy)) {
             attack(enemy);
         }
-        checkItem(this);
 
     }
 
@@ -56,30 +59,33 @@ public class Player extends Actor {
                 enemy.getTileName().equals("skeleton");
     }
 
-
-    private void checkItem(Actor actor){
-        Cell nextCell = actor.getCell();
-        if(nextCell.getItem() != null){
-            alertBox("Press E to pick up item");
+    private Boolean checkDoorCondition(int moveX, int moveY){
+        Door door = this.getCell().getNeighbor(moveX, moveY).getDoor();
+        if (door != null){
+            if(door.getTileName().equals("closedDoor")){
+                return false;
+            }
         }
+        return null;
+    }
+
+    private void openDoor(Cell nextCell){
 
     }
 
-    private void alertBox(String alertMessage){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText(null);
-        alert.setContentText(alertMessage);
-        alert.showAndWait();
+    public Boolean checkItem(){
+        Cell actualCell = this.getCell();
+        if(actualCell.getItem() != null){
+                return true;
+            }
+        return false;
     }
 
 
     public void pickUpItem(){
         try{
             String item = this.getCell().getItem().getTileName();
-            if (item.equals(item)){
-                this.getCell().setItem(null);
-            }
+            this.getCell().setItem(null);
             this.inventoryAddItem(item);
         }
         catch (Exception e){
