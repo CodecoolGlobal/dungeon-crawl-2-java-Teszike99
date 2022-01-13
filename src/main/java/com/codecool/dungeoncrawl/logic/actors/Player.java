@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import Items.Door;
+import Items.OpenDoor;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 
@@ -40,13 +41,11 @@ public class Player extends Actor {
         CellType typeOfTile = nextCell.getType();
         Actor enemy = nextCell.getActor();
 
-        if (Boolean.FALSE.equals(checkDoorCondition(moveX, moveY)) && !playerInventory.contains("key")) {
-            return;
-        }
-        else if (Boolean.TRUE.equals(checkDoorCondition(moveX, moveY))){
+         if (playerInventory.contains("key")){
             openDoor(nextCell);
-        }
-        else if (checkEmptyField(typeOfTile, enemy)) {
+        } else if (Boolean.FALSE.equals(checkDoorCondition(moveX, moveY))) {
+            return;
+        } else if (checkEmptyField(typeOfTile, enemy)) {
             putActorOnMap(nextCell);
         }else if(checkAttack(typeOfTile, enemy)) {
             attack(enemy);
@@ -70,7 +69,10 @@ public class Player extends Actor {
     }
 
     private void openDoor(Cell nextCell){
-
+        if(nextCell.getType() == CellType.CLOSEDOOR){
+            nextCell.setDoor(null);
+            nextCell.setType(CellType.OPENDOOR);
+        }
     }
 
     public Boolean checkItem(){

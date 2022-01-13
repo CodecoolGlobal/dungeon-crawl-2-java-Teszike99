@@ -1,11 +1,14 @@
 package com.codecool.dungeoncrawl.logic;
 
+import Items.OpenDoor;
+
 public enum CellType {
     EMPTY("empty"),
     FLOOR("floor"),
     WALL("wall"),
     STAIRS("stairs"),
-    DOOR("door");
+    CLOSEDOOR("closeDoor"),
+    OPENDOOR("openDoor");
 
     private final String tileName;
 

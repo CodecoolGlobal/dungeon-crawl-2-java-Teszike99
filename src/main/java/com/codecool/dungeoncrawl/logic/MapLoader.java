@@ -25,10 +25,10 @@ public class MapLoader {
                     Cell cell = map.getCell(x, y);
                     switch (line.charAt(x)) {
                         case 'o':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(CellType.OPENDOOR);
                             new OpenDoor(cell);
                         case 'c':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(CellType.CLOSEDOOR);
                             new ClosedDoor(cell);
                             break;
                         case 'l':
