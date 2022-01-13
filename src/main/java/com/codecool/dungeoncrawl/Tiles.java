@@ -23,17 +23,16 @@ public class Tiles {
     }
 
     static {
-        tileMap.put("empty", new Tile(8, 5));
-        tileMap.put("wall", new Tile(7, 15));
-        tileMap.put("floor", new Tile(0, 0));
-        tileMap.put("player", new Tile(29, 10));
-        tileMap.put("skeleton", new Tile(29, 1));
+        tileMap.put("empty", new Tile(0, 0));
+        tileMap.put("wall", new Tile(10, 17));
+        tileMap.put("floor", new Tile(2, 0));
+        tileMap.put("player", new Tile(27, 0));
+        tileMap.put("skeleton", new Tile(29, 6));
         tileMap.put("key", new Tile(16, 23));
-        tileMap.put("sword", new Tile(31, 9));
-        tileMap.put("stairs", new Tile(30, 21));
-        tileMap.put("ghost", new Tile(26, 10));
-        tileMap.put("car", new Tile(13, 23));
-        tileMap.put("house", new Tile(4, 20));
+        tileMap.put("sword", new Tile(0, 30));
+        tileMap.put("stairs", new Tile(0, 1));
+        tileMap.put("ghost", new Tile(24, 2));
+        tileMap.put("LazyWitch", new Tile(20,20));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {

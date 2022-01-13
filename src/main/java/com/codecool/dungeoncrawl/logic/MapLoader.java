@@ -5,6 +5,7 @@ import Items.House;
 import Items.Key;
 import Items.Sword;
 import com.codecool.dungeoncrawl.logic.actors.Ghost;
+import com.codecool.dungeoncrawl.logic.actors.LazyWitch;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 
@@ -62,6 +63,10 @@ public class MapLoader {
                         case 'g':
                             cell.setType(CellType.FLOOR);
                             map.setEnemy(new Ghost(cell));
+                            break;
+                        case 'p':
+                            cell.setType(CellType.FLOOR);
+                            map.setEnemy(new LazyWitch(cell));
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
