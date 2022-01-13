@@ -26,7 +26,7 @@ public class Ghost extends Enemy{
         if (checkAttack(nextCell.getType(), nextCell.getActor())){
             attack(this);
         }else{
-            putActorOnMap(nextCell);
+            move(nextCell);
         }
 
     }

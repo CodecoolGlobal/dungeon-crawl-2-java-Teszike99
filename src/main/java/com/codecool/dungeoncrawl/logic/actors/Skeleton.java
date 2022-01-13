@@ -35,7 +35,7 @@ public class Skeleton extends Enemy {
             movingPossible = checkSkeletonMove(typeOfTile, player);
         }
         if (checkEmptyField(typeOfTile, player)){
-            putActorOnMap(cellNextToSkeleton);
+            move(cellNextToSkeleton);
         }else if(checkAttack(typeOfTile, player)){
             attack(player);
         }

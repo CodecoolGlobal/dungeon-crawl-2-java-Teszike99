@@ -1,6 +1,5 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 
@@ -41,15 +40,16 @@ public class Player extends Actor {
         CellType typeOfTile = nextCell.getType();
         Actor enemy = nextCell.getActor();
         if (checkEmptyField(typeOfTile, enemy)) {
-            putActorOnMap(nextCell);
+            move(nextCell);
         }else if(checkAttack(typeOfTile, enemy)) {
             attack(enemy);
-        }else{ }
+        }
+
     }
 
     private boolean checkAttack(CellType typeOfTile, Actor enemy){
-        return typeOfTile == CellType.FLOOR &&
-                enemy.getTileName().equals("skeleton");
+        boolean isEnemy = enemy instanceof Enemy;
+        return typeOfTile == CellType.FLOOR && isEnemy;
 
 
     }

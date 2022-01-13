@@ -20,7 +20,7 @@ public abstract class Actor implements Drawable {
     }
 
 
-    public void putActorOnMap(Cell nextCell) {
+    public void move(Cell nextCell) {
         cell.setActor(null);
         nextCell.setActor(this);
         cell = nextCell;

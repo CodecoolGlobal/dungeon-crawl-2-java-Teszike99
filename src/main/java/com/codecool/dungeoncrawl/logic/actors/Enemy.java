@@ -13,8 +13,8 @@ public abstract class Enemy extends Actor{
     public abstract void move();
 
     public boolean checkAttack(CellType typeOfTile, Actor player){
-        return typeOfTile == CellType.FLOOR && player != null &&
-                player.getTileName().equals("player");
+        boolean isPlayer = player instanceof Player;
+        return typeOfTile == CellType.FLOOR && isPlayer;
     }
 
 
