@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic;
 import Items.Car;
 import Items.House;
 import Items.Key;
+import Items.Potion;
 import Items.Sword;
 import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.LazyWitch;
@@ -71,6 +72,10 @@ public class MapLoader {
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
+                            break;
+                        case 'x':
+                            cell.setType(CellType.FLOOR);
+                            new Potion(cell);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

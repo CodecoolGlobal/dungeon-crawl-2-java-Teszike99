@@ -41,13 +41,15 @@ public class Player extends Actor {
 
     public void inventoryAddItem(String item){
         if(playerInventory.contains(item)){
-            System.out.println("You alredy have this item!");
+            System.out.println("You already have this item!");
         }
         else {
             playerInventory.add(item);
-        }
-        if (item.equals("sword")){
-            strength = 10;
+            if (item.equals("sword")){
+                strength = 10;
+            }else if(item.equals("potion")){
+                this.health += 10;
+            }
         }
     }
 

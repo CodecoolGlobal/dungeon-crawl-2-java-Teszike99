@@ -109,9 +109,11 @@ public class GameMap {
 
     public void pickUpItem(){
         try{
-            String item = player.getCell().getItem().getTileName();
-            getPlayer().getCell().setItem(null);
-            player.inventoryAddItem(item);
+            Item item = player.getCell().getItem();
+            if (item instanceof Item) {
+                getPlayer().getCell().setItem(null);
+                player.inventoryAddItem(item.getTileName());
+            }
         }
         catch (Exception e){
             System.out.println("There is no item.");
