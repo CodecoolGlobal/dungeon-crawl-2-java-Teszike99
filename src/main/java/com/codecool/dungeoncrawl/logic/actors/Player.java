@@ -41,7 +41,7 @@ public class Player extends Actor {
         CellType typeOfTile = nextCell.getType();
         Actor enemy = nextCell.getActor();
 
-         if (playerInventory.contains("key")){
+         if (playerInventory.contains("key") && Boolean.FALSE.equals(checkDoorCondition(moveX, moveY))){
             openDoor(nextCell);
         } else if (Boolean.FALSE.equals(checkDoorCondition(moveX, moveY))) {
             return;
