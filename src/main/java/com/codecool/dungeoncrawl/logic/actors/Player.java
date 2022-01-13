@@ -39,19 +39,18 @@ public class Player extends Actor {
         Cell nextCell = playerCell.getNeighbor(moveX, moveY);
         CellType typeOfTile = nextCell.getType();
         Actor enemy = nextCell.getActor();
-        if (checkEmptyField(typeOfTile, enemy)) {
-            move(nextCell);
-        }else if(checkAttack(typeOfTile, enemy)) {
-            attack(enemy);
+        if (checkEmptyField(typeOfTile)) {
+            if (checkAttack(enemy)) {
+                attack(enemy);
+            }else{
+                move(nextCell);
+            }
         }
 
     }
 
-    private boolean checkAttack(CellType typeOfTile, Actor enemy){
-        boolean isEnemy = enemy instanceof Enemy;
-        return typeOfTile == CellType.FLOOR && isEnemy;
-
-
+    private boolean checkAttack(Actor enemy){
+        return enemy instanceof Enemy;
     }
 }
 

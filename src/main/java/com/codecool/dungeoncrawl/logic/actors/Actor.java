@@ -15,8 +15,8 @@ public abstract class Actor implements Drawable {
     }
 
 
-    public boolean checkEmptyField(CellType typeOfTile, Actor enemy){
-        return (typeOfTile == CellType.FLOOR || typeOfTile == CellType.STAIRS) && enemy == null;
+    public boolean checkEmptyField(CellType typeOfTile){
+        return typeOfTile == CellType.FLOOR;
     }
 
 
@@ -47,6 +47,7 @@ public abstract class Actor implements Drawable {
     }
 
 
+
     public void attack(Actor enemy){
         Actor player = cell.getGameMap().getPlayer();
         if (enemy.getHealth() - 5 <= 0) {
@@ -64,4 +65,5 @@ public abstract class Actor implements Drawable {
     private void gameOver() {
 
     }
+
 }
