@@ -12,9 +12,8 @@ public abstract class Enemy extends Actor{
 
     public abstract void move();
 
-    public boolean checkAttack(CellType typeOfTile, Actor player){
-        boolean isPlayer = player instanceof Player;
-        return typeOfTile == CellType.FLOOR && isPlayer;
+    public boolean checkAttack(Actor player){
+        return player instanceof Player;
     }
 
 

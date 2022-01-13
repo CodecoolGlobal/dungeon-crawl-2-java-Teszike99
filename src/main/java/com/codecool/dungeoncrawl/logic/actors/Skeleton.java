@@ -20,33 +20,34 @@ public class Skeleton extends Enemy {
 
     @Override
     public void move() {
-        boolean movingPossible = true;
-        Cell skeletonCell;
-        Cell cellNextToSkeleton = null;
-        CellType typeOfTile = null;
-        Actor player = null;
-        while (movingPossible){
-            int randomX = rand.nextInt(-1,2);
-            int randomY = rand.nextInt(-1,2);
-            skeletonCell = this.getCell();
-            cellNextToSkeleton = skeletonCell.getNeighbor(randomX, randomY);
-            typeOfTile = cellNextToSkeleton.getType();
-            player = cellNextToSkeleton.getActor();
-            movingPossible = checkSkeletonMove(typeOfTile, player);
-        }
-        if (checkEmptyField(typeOfTile, player)){
-            move(cellNextToSkeleton);
-        }else if(checkAttack(typeOfTile, player)){
-            attack(player);
+        Cell randomMove = getRandomMove();
+        Actor player = randomMove.getActor();
+        if (checkEmptyField(randomMove.getType())){
+            if (checkAttack(player)){
+                attack(player);
+            }else {
+                move(randomMove);
+            }
         }
     }
 
-    private boolean checkSkeletonMove(CellType typeOfTile, Actor player){;
-        if (checkEmptyField(typeOfTile, player)) {
+    private Cell getRandomMove() {
+        boolean movingPossible = true;
+        Cell randomMove = null;
+        while (movingPossible){
+            int randomX = rand.nextInt(-1,2);
+            int randomY = rand.nextInt(-1,2);
+            Cell skeletonCell = this.getCell();
+            randomMove = skeletonCell.getNeighbor(randomX, randomY);
+            movingPossible = moveValidation(randomMove.getType());
+        }
+        return randomMove;
+    }
+
+    private boolean moveValidation(CellType typeOfTile){;
+        if (checkEmptyField(typeOfTile)) {
             return false;
-        }else if(checkAttack(typeOfTile, player)) {
-            return false;
-        }else{
+        }else {
             return true;
         }
     }
