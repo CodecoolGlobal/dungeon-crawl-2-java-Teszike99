@@ -50,7 +50,12 @@ public class EnemyDaoJdbc implements EnemyDao{
             ResultSet rs = st.executeQuery();
             List<EnemyModel> enemyList = new ArrayList<>();
             while (rs.next()){
-                EnemyModel enemy = new EnemyModel(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5));
+                EnemyModel enemy = new EnemyModel(
+                        rs.getString(1),
+                        rs.getInt(2),
+                        rs.getInt(3),
+                        rs.getInt(4),
+                        rs.getInt(5));
                 enemyList.add(enemy);
             }
             return enemyList;
