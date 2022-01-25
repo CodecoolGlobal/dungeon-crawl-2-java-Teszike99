@@ -95,6 +95,10 @@ public class GameMap {
     public boolean checkPlayerDeath(Player player) {
         return player.getHealth() <= 0;
     }
+
+    public List<Enemy> getEnemies() {
+        return enemy;
+    }
 }
 
 
