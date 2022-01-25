@@ -33,13 +33,25 @@ public class PlayerDaoJdbc implements PlayerDao {
 
     @Override
     public void update(PlayerModel player) {
-
     }
 
     @Override
     public PlayerModel get(int id) {
-        return null;
-    }
+            try (Connection conn = dataSource.getConnection()) {
+                String sql = "SELECT player_name, x, y FROM player WHERE id = ?";
+                PreparedStatement st = conn.prepareStatement(sql);
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                if (!rs.next()) {
+                    return null;
+                }
+                PlayerModel data = new PlayerModel(rs.getString(1), rs.getInt(2), rs.getInt(3));
+                data.setId(id);
+                return data;
+            } catch (SQLException e) {
+                throw new RuntimeException("Error while reading author with id: " + id, e);
+            }
+        }
 
     @Override
     public List<PlayerModel> getAll() {
