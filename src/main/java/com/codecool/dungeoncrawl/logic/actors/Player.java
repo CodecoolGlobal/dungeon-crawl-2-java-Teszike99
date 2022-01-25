@@ -12,7 +12,6 @@ public class Player extends Actor {
 
     int strength;
     private int health;
-
     private LinkedList<String> playerInventory = new LinkedList<String>();
 
     public Player(Cell cell) {
@@ -22,7 +21,7 @@ public class Player extends Actor {
     }
 
     @Override
-    protected int getStrength() {
+    public int getStrength() {
         return strength;
     }
 
@@ -32,8 +31,12 @@ public class Player extends Actor {
     }
 
     @Override
-    protected void setHealth(int newHealth) {
+    public void setHealth(int newHealth) {
         health = newHealth;
+    }
+
+    public void setStrength(int strength){
+        this.strength = strength;
     }
 
     public String getTileName() {

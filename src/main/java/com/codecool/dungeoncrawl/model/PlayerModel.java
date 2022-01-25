@@ -7,11 +7,13 @@ public class PlayerModel extends BaseModel {
     private int hp;
     private int x;
     private int y;
+    private int strength;
 
-    public PlayerModel(String playerName, int x, int y) {
+    public PlayerModel(String playerName, int hp, int x, int y) {
         this.playerName = playerName;
         this.x = x;
         this.y = y;
+        this.hp = hp;
     }
 
     public PlayerModel(Player player) {
@@ -19,6 +21,7 @@ public class PlayerModel extends BaseModel {
         this.x = player.getX();
         this.y = player.getY();
         this.hp = player.getHealth();
+        this.strength = player.getStrength();
 
     }
 

@@ -110,11 +110,13 @@ public class Main extends Application {
             case S:
                 Player player = map.getPlayer();
                 dbManager.savePlayer(player);
+
                 break;
             case L:
                 PlayerModel data = dbManager.loadPlayer();
                 Cell playerCell = new Cell(map, data.getX(), data.getY(), CellType.FLOOR);
                 Player gamer = new Player(playerCell);
+                gamer.setHealth(data.getHp());
                 map.setPlayer(gamer);
         }
     }

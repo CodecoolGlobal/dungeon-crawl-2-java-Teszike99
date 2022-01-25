@@ -38,14 +38,14 @@ public class PlayerDaoJdbc implements PlayerDao {
     @Override
     public PlayerModel get(int id) {
             try (Connection conn = dataSource.getConnection()) {
-                String sql = "SELECT player_name, x, y FROM player WHERE id = ?";
+                String sql = "SELECT player_name, hp, x, y FROM player WHERE id = ?";
                 PreparedStatement st = conn.prepareStatement(sql);
                 st.setInt(1, id);
                 ResultSet rs = st.executeQuery();
                 if (!rs.next()) {
                     return null;
                 }
-                PlayerModel data = new PlayerModel(rs.getString(1), rs.getInt(2), rs.getInt(3));
+                PlayerModel data = new PlayerModel(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4));
                 data.setId(id);
                 return data;
             } catch (SQLException e) {
