@@ -9,11 +9,12 @@ public class PlayerModel extends BaseModel {
     private int y;
     private int strength;
 
-    public PlayerModel(String playerName, int hp, int x, int y) {
+    public PlayerModel(String playerName, int hp, int strength, int x, int y) {
         this.playerName = playerName;
         this.x = x;
         this.y = y;
         this.hp = hp;
+        this.strength = strength;
     }
 
     public PlayerModel(Player player) {
@@ -55,5 +56,9 @@ public class PlayerModel extends BaseModel {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getStrength() {
+        return strength;
     }
 }
