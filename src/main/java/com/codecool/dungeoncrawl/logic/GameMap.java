@@ -7,6 +7,7 @@ import com.codecool.dungeoncrawl.logic.actors.Enemy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -14,6 +15,7 @@ public class GameMap {
     private int width;
     private int height;
     private Cell[][] cells;
+    private static int currentLevel = 0;
 
     private Player player;
     private List<Enemy> enemy = new ArrayList<Enemy>();
@@ -51,15 +53,14 @@ public class GameMap {
 
     public void moveEnemies(){
         for (Enemy oneEnemy : enemy){
-            oneEnemy.move();
+            if (removableEnemy != oneEnemy){
+                oneEnemy.move();
+            }
         }
         if (removableEnemy != null){
             this.enemy.remove(removableEnemy);
+            removableEnemy = null;
         }
-    }
-
-    public void removeEnemy(Enemy enemy){
-        this.removableEnemy = enemy;
     }
 
 
@@ -71,8 +72,29 @@ public class GameMap {
         return height;
     }
 
+    public static void changeLevel(String status){
+        if (Objects.equals(status, "next")) {
+            currentLevel ++;
+        }
+        else {
+            currentLevel --;
+        }
+    }
 
+    public static int getCurrentLevel() {
+        return currentLevel;
+    }
 
+    public void checkEnemyDeath(Enemy enemy) {
+        if (enemy.getHealth() <= 0) {
+            this.removableEnemy= enemy;
+            enemy.getCell().setActor(null);
+        }
+    }
+
+    public boolean checkPlayerDeath(Player player) {
+        return player.getHealth() <= 0;
+    }
 }
 
 
