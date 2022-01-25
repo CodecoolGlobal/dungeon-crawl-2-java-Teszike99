@@ -32,7 +32,7 @@ public class Ghost extends Enemy{
     }
 
     @Override
-    protected int getStrength() {
+    public int getStrength() {
         return strength;
     }
 

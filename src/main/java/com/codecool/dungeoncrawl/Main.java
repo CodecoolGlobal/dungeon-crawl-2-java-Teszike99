@@ -11,6 +11,7 @@ import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
@@ -28,6 +29,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.sql.SQLException;
 
@@ -110,6 +112,10 @@ public class Main extends Application {
             case S:
                 Player player = map.getPlayer();
                 dbManager.savePlayer(player);
+                List<Enemy> enemies = map.getEnemies();
+                for (Enemy enemy : enemies){
+                    dbManager.saveEnemy(enemy);
+                }
 
                 break;
             case L:
@@ -117,6 +123,7 @@ public class Main extends Application {
                 Cell playerCell = new Cell(map, data.getX(), data.getY(), CellType.FLOOR);
                 Player gamer = new Player(playerCell);
                 gamer.setHealth(data.getHp());
+                gamer.setStrength(data.getStrength());
                 map.setPlayer(gamer);
         }
     }

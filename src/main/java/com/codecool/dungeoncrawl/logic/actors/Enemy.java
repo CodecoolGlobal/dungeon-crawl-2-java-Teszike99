@@ -16,7 +16,7 @@ public abstract class Enemy extends Actor{
         return player instanceof Player;
     }
 
-    protected abstract int getStrength();
+    public abstract int getStrength();
 
     public abstract int getHealth();
 

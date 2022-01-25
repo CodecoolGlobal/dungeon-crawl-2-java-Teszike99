@@ -23,7 +23,7 @@ public class LazyWitch extends Enemy{
     }
 
     @Override
-    protected int getStrength() {
+    public int getStrength() {
         return strength;
     }
 
