@@ -8,6 +8,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.List;
 
 public class GameDatabaseManager {
     private PlayerDao playerDao;
@@ -50,5 +51,10 @@ public class GameDatabaseManager {
     public void saveEnemy(Enemy enemy) {
         EnemyModel model = new EnemyModel(enemy);
         enemyDao.add(model);
+    }
+
+    public List<EnemyModel> loadEnemies() {
+        List<EnemyModel> enemyList = enemyDao.getAll(1);
+        return enemyList;
     }
 }

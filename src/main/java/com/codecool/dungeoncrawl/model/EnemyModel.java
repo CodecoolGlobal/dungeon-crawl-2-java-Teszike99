@@ -10,7 +10,7 @@ public class EnemyModel extends BaseModel {
     private int hp;
     private int strength;
 
-    public EnemyModel(String name, int x, int y, int hp, int strength) {
+    public EnemyModel(String name, int strength, int hp, int x, int y) {
         this.name = name;
         this.x = x;
         this.y = y;

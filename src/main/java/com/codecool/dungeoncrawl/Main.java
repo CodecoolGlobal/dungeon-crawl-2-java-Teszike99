@@ -13,6 +13,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.model.EnemyModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -125,6 +126,7 @@ public class Main extends Application {
                 gamer.setHealth(data.getHp());
                 gamer.setStrength(data.getStrength());
                 map.setPlayer(gamer);
+                List<EnemyModel> enemyList = dbManager.loadEnemies();
         }
     }
 

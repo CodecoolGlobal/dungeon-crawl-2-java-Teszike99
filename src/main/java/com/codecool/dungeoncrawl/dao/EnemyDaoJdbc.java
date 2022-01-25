@@ -2,9 +2,11 @@ package com.codecool.dungeoncrawl.dao;
 
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import com.codecool.dungeoncrawl.model.EnemyModel;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EnemyDaoJdbc implements EnemyDao{
@@ -41,6 +43,20 @@ public class EnemyDaoJdbc implements EnemyDao{
 
     @Override
     public List<EnemyModel> getAll(int id) {
-        return null;
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT enemy_name, strength, hp, x, y FROM enemy INNER JOIN game_state ON game_state.map_id = enemy.map_id INNER JOIN game_state ON game_state.player_id = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            List<EnemyModel> enemyList = new ArrayList<>();
+            while (rs.next()){
+                EnemyModel enemy = new EnemyModel(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5));
+                enemyList.add(enemy);
+            }
+            return enemyList;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading author with id: " + id, e);
+        }
     }
 }
+
