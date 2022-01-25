@@ -1,8 +1,5 @@
 package com.codecool.dungeoncrawl.dao;
-
-import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import com.codecool.dungeoncrawl.model.EnemyModel;
-import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
