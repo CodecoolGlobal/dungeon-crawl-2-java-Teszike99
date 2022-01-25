@@ -12,6 +12,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -109,7 +110,14 @@ public class Main extends Application {
             case S:
                 Player player = map.getPlayer();
                 dbManager.savePlayer(player);
+
                 break;
+            case L:
+                PlayerModel data = dbManager.loadPlayer();
+                Cell playerCell = new Cell(map, data.getX(), data.getY(), CellType.FLOOR);
+                Player gamer = new Player(playerCell);
+                gamer.setHealth(data.getHp());
+                map.setPlayer(gamer);
         }
     }
 
