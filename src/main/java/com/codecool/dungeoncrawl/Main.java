@@ -5,9 +5,11 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.Items.Item;
+import com.codecool.dungeoncrawl.logic.Items.Key;
+import com.codecool.dungeoncrawl.logic.Items.Potion;
+import com.codecool.dungeoncrawl.logic.Items.Sword;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Enemy;
-import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.model.EnemyModel;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.ItemModel;
@@ -32,10 +34,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 
 public class Main extends Application {
@@ -195,7 +194,8 @@ public class Main extends Application {
     private void checkWin() {
         Player player = map.getPlayer();
         if (player.getCell().getType() == CellType.GOAL){
-            map = MapLoader.loadMap("/win.txt");
+            level = "/win.txt";
+            map = MapLoader.loadMap(level);
         }
     }
 
@@ -203,14 +203,15 @@ public class Main extends Application {
     private void changeMap() {
         if (Objects.equals(map.getPlayer().getCell().getTileName(), "stairs")) {
             level = "/map2.txt";
-            map = MapLoader.loadMap("/map2.txt");
+            map = MapLoader.loadMap(level);
         }
     }
 
     private void checkLose() {
         Player player = map.getPlayer();
         if (map.checkPlayerDeath(player)) {
-            map = MapLoader.loadMap("/lose.txt");
+            level = "/lose.txt";
+            map = MapLoader.loadMap(level);
         }
     }
 
@@ -253,14 +254,55 @@ public class Main extends Application {
     public void LoadGame() {
         Optional<String> choice = getSaveChoiceFromUser();
         String loadedName = choice.get();
-        PlayerModel data = dbManager.loadPlayer(loadedName);
+        PlayerModel data = dbManager.loadPlayer("akos");
+        GameState loadMap = dbManager.loadMap(data.getId());
+        map = MapLoader.loadMap(loadMap.getCurrentMap());
+        createPlayer(data);
+        List<EnemyModel> enemyModels = dbManager.loadEnemies();
+        enemyModels.forEach(enemyModel -> createEnemyList(enemyModel));
+        List<ItemModel> itemModels = dbManager.loadItems();
+        itemModels.forEach(itemModel -> createItemList(itemModel));
+        refresh();
+    }
+
+    private void createPlayer(PlayerModel data) {
         Cell playerCell = new Cell(map, data.getX(), data.getY(), CellType.FLOOR);
         Player gamer = new Player(playerCell);
         gamer.setHealth(data.getHp());
         gamer.setStrength(data.getStrength());
-        map.setPlayer(gamer);
-        List<EnemyModel> enemyList = dbManager.loadEnemies();
-        List<ItemModel> itemList = dbManager.loadItems();
+    }
+
+    private void createItemList(ItemModel itemModel) {
+        List<Item> itemList = new ArrayList<>();
+        Cell itemCell = new Cell(map, itemModel.getX(), itemModel.getY(), CellType.FLOOR);
+        if (itemModel.getName().equals("uzi")){
+            Item uzi = new Sword(itemCell);
+            itemList.add(uzi);
+        }else if (itemModel.getName().equals("cola")){
+            Item cola = new Potion(itemCell);
+            itemList.add(cola);
+        }else if (itemModel.getName().equals("key")){
+            Item key = new Key(itemCell);
+            itemList.add(key);
+        }
+        map.changeItemList(itemList);
+    }
+
+    private void createEnemyList(EnemyModel enemyModel) {
+        List<Enemy> enemyList = new ArrayList<>();
+        Cell enemyCell = new Cell(map, enemyModel.getX(), enemyModel.getX(), CellType.FLOOR);
+        if (enemyModel.getName().equals("ghost")){
+            Enemy ghost = new Ghost(enemyCell);
+            enemyList.add(ghost);
+        } else if (enemyModel.getName().equals("LazyWitch")){
+            Enemy lazyWitch = new LazyWitch(enemyCell);
+            enemyList.add(lazyWitch);
+        }else{
+            Enemy skeleton = new Skeleton(enemyCell);
+            enemyList.add(skeleton);
+        }
+        map.changeEnemyList(enemyList);
+
 
     }
 

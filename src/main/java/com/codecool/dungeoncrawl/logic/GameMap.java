@@ -105,6 +105,14 @@ public class GameMap {
     public List<Item> getItem() {
         return item;
     }
+
+    public void changeEnemyList(List<Enemy> enemyList) {
+        this.enemy = enemyList;
+    }
+
+    public void changeItemList(List<Item> itemList) {
+        this.item = itemList;
+    }
 }
 
 
