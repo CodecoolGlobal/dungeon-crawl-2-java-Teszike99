@@ -1,16 +1,9 @@
 package com.codecool.dungeoncrawl;
-
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-
-import com.codecool.dungeoncrawl.logic.actors.Actor;
-
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.EnemyModel;
@@ -22,19 +15,23 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.sql.SQLException;
+import java.util.Optional;
 
 
 public class Main extends Application {
@@ -68,8 +65,8 @@ public class Main extends Application {
         ui.add(saveButton, 1, 7);
         ui.add(loadButton,1,8);
 
-        saveButton.setOnAction(e -> EventHandler.displaySaveButton());
-        loadButton.setOnAction(e -> EventHandler.displayLoadButton());
+        saveButton.setOnAction(e -> displaySaveButton());
+        loadButton.setOnAction(e -> displayLoadButton());
 
         BorderPane borderPane = new BorderPane();
         ui.add(alertLabel, 0, 0);
@@ -241,6 +238,43 @@ public class Main extends Application {
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
         }
+    }
+
+    public static void displaySaveButton() {
+        TextField nameInput = new TextField();
+        Button save = new Button("Save");
+        Button cancel = new Button("Cancel");
+        VBox layout = new VBox(2);
+        layout.getChildren().addAll(nameInput, save, cancel);
+        Scene saveScene = new Scene(layout, 350, 150);
+        Stage saveStage = new Stage();
+        saveStage.setTitle("Save game");
+        saveStage.setScene(saveScene);
+        saveStage.show();
+        save.setOnAction(e -> saveGame(saveStage, nameInput));
+        cancel.setOnAction(e -> saveStage.close());
+
+    }
+
+    private static void saveGame(Stage saveStage, TextField nameInput) {
+        String saveName = nameInput.getText();
+        System.out.println(saveName);
+        saveStage.close();
+    }
+
+    public static void displayLoadButton() {
+        Optional<String> choice = getSaveChoiceFromUser();
+        System.out.println(choice);
+    }
+
+    public static Optional<String> getSaveChoiceFromUser() {
+        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>();
+        choiceDialog.setTitle("Load Game");
+        choiceDialog.getItems().addAll("a","v");
+        choiceDialog.setHeaderText("Choose a save to load!");
+        choiceDialog.getDialogPane().setContentText("Save name: ");
+        Optional<String> choice = choiceDialog.showAndWait();
+        return choice;
     }
 
     private void exit() {
