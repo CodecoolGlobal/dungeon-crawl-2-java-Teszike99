@@ -38,7 +38,7 @@ public class ItemDaoJdbc implements ItemDao {
     @Override
     public List<ItemModel> getAll(int id) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT item_name, x, y FROM item INNER JOIN game_state ON game_state.map_id = item.map_id INNER JOIN game_state ON game_state.player_id = ?";
+            String sql = "SELECT item_name, x, y FROM item INNER JOIN game_state ON game_state.id = item.game_state_id INNER JOIN game_state ON game_state.player_id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             List<ItemModel> itemList = new ArrayList<>();
