@@ -68,6 +68,8 @@ public class Main extends Application {
         ui.add(saveButton, 1, 7);
         ui.add(loadButton,1,8);
 
+        saveButton.setFocusTraversable(false);
+        loadButton.setFocusTraversable(false);
         saveButton.setOnAction(e -> displaySaveButton());
         loadButton.setOnAction(e -> displayLoadButton());
 
