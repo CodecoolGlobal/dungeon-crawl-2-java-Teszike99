@@ -28,6 +28,7 @@ public class MapLoader {
                         case 'o':
                             cell.setType(CellType.OPENDOOR);
                             new OpenDoor(cell);
+                            break;
                         case 'c':
                             cell.setType(CellType.CLOSEDOOR);
                             new ClosedDoor(cell);
@@ -37,11 +38,11 @@ public class MapLoader {
                             break;
                         case 'w':
                             cell.setType(CellType.FLOOR);
-                            new Sword(cell);
+                            map.setItem(new Sword(cell));
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
-                            new Key(cell);
+                            map.setItem(new Key(cell));
                             break;
                         case ' ':
                             cell.setType(CellType.EMPTY);
@@ -78,7 +79,7 @@ public class MapLoader {
                             break;
                         case 'x':
                             cell.setType(CellType.FLOOR);
-                            new Potion(cell);
+                            map.setItem(new Potion(cell));
                             break;
                         case 't':
                             cell.setType(CellType.GOAL);

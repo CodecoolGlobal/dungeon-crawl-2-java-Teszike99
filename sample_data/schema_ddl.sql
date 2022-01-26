@@ -10,7 +10,7 @@ CREATE TABLE public.game_state (
 DROP TABLE IF EXISTS public.player;
 CREATE TABLE public.player (
     id serial NOT NULL PRIMARY KEY,
-    player_name text UNIQUE NOT NULL,
+    player_name text NOT NULL,
     hp integer NOT NULL,
     strength integer NOT NULL,
     x integer NOT NULL,
@@ -20,7 +20,6 @@ CREATE TABLE public.player (
 DROP TABLE IF EXISTS public.enemy;
 CREATE TABLE public.enemy (
     id serial NOT NULL PRIMARY KEY,
-    map_id integer NOT NULL,
     enemy_name text NOT NULL,
     strength integer NOT NULL,
     hp integer NOT NULL,
@@ -31,7 +30,6 @@ CREATE TABLE public.enemy (
 DROP TABLE IF EXISTS public.item;
 CREATE TABLE public.item (
     id serial NOT NULL PRIMARY KEY,
-    map_id integer NOT NULL,
     item_name text NOT NULL,
     x integer NOT NULL,
     y integer NOT NULL
@@ -49,8 +47,3 @@ ALTER TABLE ONLY public.game_state
 ALTER TABLE ONLY public.game_state
     ADD CONSTRAINT fk_map_id FOREIGN KEY (map_id) REFERENCES public.map(id);
 
-ALTER TABLE ONLY public.enemy
-    ADD CONSTRAINT fk_map_id FOREIGN KEY (map_id) REFERENCES public.map(id);
-
-ALTER TABLE ONLY public.item
-    ADD CONSTRAINT fk_map_id FOREIGN KEY (map_id) REFERENCES public.map(id);

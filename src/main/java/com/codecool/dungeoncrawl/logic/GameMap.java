@@ -1,9 +1,9 @@
 package com.codecool.dungeoncrawl.logic;
 
 
-import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.Items.Item;
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
-
+import com.codecool.dungeoncrawl.logic.actors.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,7 @@ public class GameMap {
 
     private Player player;
     private List<Enemy> enemy = new ArrayList<Enemy>();
+    private List<Item> item = new ArrayList<Item>();
     private static final Random rand = new Random();
     private Enemy removableEnemy;
 
@@ -46,6 +47,7 @@ public class GameMap {
         this.enemy.add(enemy);
     }
 
+    public void setItem(Item item){this.item.add(item);}
 
     public Player getPlayer() {
         return player;
@@ -98,6 +100,10 @@ public class GameMap {
 
     public List<Enemy> getEnemies() {
         return enemy;
+    }
+
+    public List<Item> getItem() {
+        return item;
     }
 }
 

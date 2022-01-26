@@ -1,19 +1,15 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
-
-import com.codecool.dungeoncrawl.logic.actors.Actor;
-
-import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.Items.Item;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.EnemyModel;
+import com.codecool.dungeoncrawl.model.ItemModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -29,10 +25,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.sql.SQLException;
 
 
 public class Main extends Application {
@@ -46,7 +43,6 @@ public class Main extends Application {
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
     GameDatabaseManager dbManager;
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -113,6 +109,8 @@ public class Main extends Application {
             case S:
                 Player player = map.getPlayer();
                 dbManager.savePlayer(player);
+               List<Item> items = map.getItem();
+               items.forEach(item -> dbManager.saveItem(item));
                 List<Enemy> enemies = map.getEnemies();
                 for (Enemy enemy : enemies){
                     dbManager.saveEnemy(enemy);
@@ -127,6 +125,7 @@ public class Main extends Application {
                 gamer.setStrength(data.getStrength());
                 map.setPlayer(gamer);
                 List<EnemyModel> enemyList = dbManager.loadEnemies();
+                List<ItemModel> itemList = dbManager.loadItems();
         }
     }
 
