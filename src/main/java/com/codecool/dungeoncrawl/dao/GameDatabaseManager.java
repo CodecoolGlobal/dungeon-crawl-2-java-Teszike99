@@ -12,6 +12,8 @@ import org.postgresql.ds.PGSimpleDataSource;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GameDatabaseManager {
     private PlayerDao playerDao;
@@ -79,6 +81,10 @@ public class GameDatabaseManager {
         gameStateDao.add(gameModel);
         items.forEach(item -> saveItem(item, gameModel));
         enemies.forEach(enemy -> saveEnemy(enemy, gameModel));
+    }
+
+    public Set<String> loadChoices() {
+        return playerDao.getAll().stream().map(PlayerModel::getPlayerName).collect(Collectors.toSet());
     }
 
 

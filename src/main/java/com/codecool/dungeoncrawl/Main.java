@@ -267,9 +267,9 @@ public class Main extends Application {
     public Optional<String> getSaveChoiceFromUser() {
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>();
         choiceDialog.setTitle("Load Game");
-        choiceDialog.getItems().addAll("a","v");
+        choiceDialog.getItems().addAll(dbManager.loadChoices());
         choiceDialog.setHeaderText("Choose a save to load!");
-        choiceDialog.getDialogPane().setContentText("Save name: ");
+        choiceDialog.getDialogPane().setContentText("Player name: ");
         Optional<String> choice = choiceDialog.showAndWait();
         return choice;
     }
