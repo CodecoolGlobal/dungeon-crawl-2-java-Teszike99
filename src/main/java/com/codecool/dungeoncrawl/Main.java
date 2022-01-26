@@ -18,6 +18,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -42,6 +43,8 @@ public class Main extends Application {
     Label alertLabel = new Label();
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
+    Button saveButton = new Button("Save Game");
+    Button loadButton = new Button("Load Game");
     GameDatabaseManager dbManager;
 
     public static void main(String[] args) {
@@ -57,6 +60,12 @@ public class Main extends Application {
 
         ui.add(new Label("Health: "), 0, 3);
         ui.add(new Label("Items: "), 0, 6);
+        ui.add(new Label(""), 1, 6);
+        ui.add(saveButton, 1, 7);
+        ui.add(loadButton,1,8);
+
+        saveButton.setOnAction(e -> EventHandler.displaySaveButton());
+        loadButton.setOnAction(e -> EventHandler.displayLoadButton());
 
         BorderPane borderPane = new BorderPane();
         ui.add(alertLabel, 0, 0);
