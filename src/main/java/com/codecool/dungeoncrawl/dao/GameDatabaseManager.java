@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.EnemyModel;
 import com.codecool.dungeoncrawl.model.ItemModel;
+import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import org.postgresql.ds.PGSimpleDataSource;
 
@@ -12,22 +13,22 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
 
-public class
-GameDatabaseManager {
+public class GameDatabaseManager {
     private PlayerDao playerDao;
     private EnemyDao enemyDao;
     private ItemDao itemDao;
+    private GameStateDao gameStateDao;
 
     public void setup() throws SQLException {
         DataSource dataSource = connect();
         playerDao = new PlayerDaoJdbc(dataSource);
         enemyDao = new EnemyDaoJdbc(dataSource);
+        gameStateDao = new GameStateDaoJdbc(dataSource);
         itemDao = new ItemDaoJdbc(dataSource);
 
     }
 
-    public void savePlayer(Player player) {
-        PlayerModel model = new PlayerModel(player);
+    public void savePlayer(PlayerModel model) {
         playerDao.add(model);
     }
 
@@ -53,9 +54,9 @@ GameDatabaseManager {
         return dataSource;
     }
 
-    public void saveEnemy(Enemy enemy) {
+    public void saveEnemy(Enemy enemy, GameState state) {
         EnemyModel model = new EnemyModel(enemy);
-        enemyDao.add(model);
+        enemyDao.add(model, state);
     }
 
     public void saveItem(Item item){
@@ -67,6 +68,10 @@ GameDatabaseManager {
     public List<EnemyModel> loadEnemies() {
         List<EnemyModel> enemyList = enemyDao.getAll(1);
         return enemyList;
+    }
+
+    public void saveGameState(GameState state) {
+        gameStateDao.add(state);
     }
 
     public List<ItemModel> loadItems(){
