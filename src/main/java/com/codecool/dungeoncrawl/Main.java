@@ -97,7 +97,10 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case E:
-                map.getPlayer().pickUpItem();
+                Item item = map.getPlayer().pickUpItem();
+                List<Item> itemList = map.getItemList();
+                itemList.remove(item);
+                map.setItemList(itemList);
                 break;
             case R:
                 map = MapLoader.loadMap("/map.txt");
@@ -245,7 +248,7 @@ public class Main extends Application {
         System.out.println(saveName);
         saveStage.close();
         Player player = map.getPlayer();
-        List<Item> items = map.getItem();
+        List<Item> items = map.getItemList();
         List<Enemy> enemies = map.getEnemies();
         dbManager.save(player, level, saveName, enemies, items);
     }

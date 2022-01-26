@@ -19,7 +19,7 @@ public class GameMap {
 
     private Player player;
     private List<Enemy> enemy = new ArrayList<Enemy>();
-    private List<Item> item = new ArrayList<Item>();
+    private List<Item> itemList = new ArrayList<Item>();
     private static final Random rand = new Random();
     private Enemy removableEnemy;
 
@@ -47,7 +47,7 @@ public class GameMap {
         this.enemy.add(enemy);
     }
 
-    public void setItem(Item item){this.item.add(item);}
+    public void setItem(Item item){this.itemList.add(item);}
 
     public Player getPlayer() {
         return player;
@@ -74,19 +74,6 @@ public class GameMap {
         return height;
     }
 
-    public static void changeLevel(String status){
-        if (Objects.equals(status, "next")) {
-            currentLevel ++;
-        }
-        else {
-            currentLevel --;
-        }
-    }
-
-    public static int getCurrentLevel() {
-        return currentLevel;
-    }
-
     public void checkEnemyDeath(Enemy enemy) {
         if (enemy.getHealth() <= 0) {
             this.removableEnemy= enemy;
@@ -102,8 +89,12 @@ public class GameMap {
         return enemy;
     }
 
-    public List<Item> getItem() {
-        return item;
+    public List<Item> getItemList() {
+        return itemList;
+    }
+
+    public void setItemList(List<Item> newItemList){
+        this.itemList = newItemList;
     }
 }
 

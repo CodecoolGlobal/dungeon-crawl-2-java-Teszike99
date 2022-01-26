@@ -4,6 +4,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Items.Door;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
+import com.codecool.dungeoncrawl.logic.Items.Item;
 
 
 import java.util.LinkedList;
@@ -108,14 +109,17 @@ public class Player extends Actor {
     }
 
 
-    public void pickUpItem(){
+    public Item pickUpItem(){
         try{
-            String item = this.getCell().getItem().getTileName();
+            String itemName = this.getCell().getItem().getTileName();
+            Item item = this.getCell().getItem();
             this.getCell().setItem(null);
-            this.inventoryAddItem(item);
+            this.inventoryAddItem(itemName);
+            return item;
         }
         catch (Exception e){
             System.out.println("There is no item.");
+            return null;
         }
     }
 
