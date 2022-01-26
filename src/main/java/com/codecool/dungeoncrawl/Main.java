@@ -14,6 +14,7 @@ import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.EnemyModel;
+import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -112,11 +113,15 @@ public class Main extends Application {
                 break;
             case S:
                 Player player = map.getPlayer();
-                dbManager.savePlayer(player);
+                PlayerModel model = new PlayerModel(player);
+                dbManager.savePlayer(model);
+                GameState state = new GameState(level, model);
+                dbManager.saveGameState(state);
                 List<Enemy> enemies = map.getEnemies();
                 for (Enemy enemy : enemies){
-                    dbManager.saveEnemy(enemy);
+                    dbManager.saveEnemy(enemy, state);
                 }
+
 
                 break;
             case L:
@@ -207,6 +212,7 @@ public class Main extends Application {
 
     private void changeMap() {
         if (Objects.equals(map.getPlayer().getCell().getTileName(), "stairs")) {
+            level = "/map2.txt";
             map = MapLoader.loadMap("/map2.txt");
         }
     }
