@@ -6,13 +6,11 @@ import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.Items.Item;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.EnemyModel;
-import com.codecool.dungeoncrawl.model.ItemModel;
 import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.ItemModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -32,11 +30,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.sql.SQLException;
 import java.util.Optional;
 
 
@@ -128,9 +126,8 @@ public class Main extends Application {
                 dbManager.savePlayer(model);
                 GameState state = new GameState(level, model);
                 dbManager.saveGameState(state);
-                dbManager.savePlayer(player);
                List<Item> items = map.getItem();
-               items.forEach(item -> dbManager.saveItem(item));
+               items.forEach(item -> dbManager.saveItem(item, state));
                 List<Enemy> enemies = map.getEnemies();
                 for (Enemy enemy : enemies){
                     dbManager.saveEnemy(enemy, state);

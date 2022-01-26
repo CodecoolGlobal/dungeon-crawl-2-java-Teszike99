@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.dao;
 
+import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.ItemModel;
 
 import javax.sql.DataSource;
@@ -15,14 +16,14 @@ public class ItemDaoJdbc implements ItemDao {
     }
 
     @Override
-    public void add(ItemModel item) {
+    public void add(ItemModel item, GameState state) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "INSERT INTO item (item_name, x, y) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO item (game_state_id, item_name, x, y) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-            statement.setString(1, item.getName());
-            statement.setInt(2, item.getX());
-            statement.setInt(3, item.getY());
+            statement.setInt(1, state.getId());
+            statement.setString(2, item.getName());
+            statement.setInt(3, item.getX());
+            statement.setInt(4, item.getY());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();

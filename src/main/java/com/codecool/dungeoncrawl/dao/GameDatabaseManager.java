@@ -2,10 +2,9 @@ package com.codecool.dungeoncrawl.dao;
 
 import com.codecool.dungeoncrawl.logic.Items.Item;
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.EnemyModel;
-import com.codecool.dungeoncrawl.model.ItemModel;
 import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.ItemModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import org.postgresql.ds.PGSimpleDataSource;
 
@@ -59,9 +58,9 @@ public class GameDatabaseManager {
         enemyDao.add(model, state);
     }
 
-    public void saveItem(Item item){
-        ItemModel model = new ItemModel(item);
-        itemDao.add(model);
+    public void saveItem(Item item, GameState state){
+        ItemModel ItemModel = new ItemModel(item);
+        itemDao.add(ItemModel, state );
     }
 
 
