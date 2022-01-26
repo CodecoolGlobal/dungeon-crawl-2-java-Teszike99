@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.dao;
 
 import com.codecool.dungeoncrawl.logic.Items.Item;
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.EnemyModel;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.ItemModel;
@@ -27,14 +28,6 @@ public class GameDatabaseManager {
 
     }
 
-    public void savePlayer(PlayerModel model) {
-        playerDao.add(model);
-    }
-
-    public PlayerModel loadPlayer(){
-        PlayerModel player = playerDao.get(1);
-        return player;
-    }
 
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
@@ -60,23 +53,33 @@ public class GameDatabaseManager {
 
     public void saveItem(Item item, GameState state){
         ItemModel ItemModel = new ItemModel(item);
-        itemDao.add(ItemModel, state );
+        itemDao.add(ItemModel, state);
     }
 
+    public PlayerModel loadPlayer(String loadedName){
+        PlayerModel player = playerDao.get(loadedName);
+        return player;
+    }
 
     public List<EnemyModel> loadEnemies() {
         List<EnemyModel> enemyList = enemyDao.getAll(1);
         return enemyList;
     }
 
-    public void saveGameState(GameState state) {
-        gameStateDao.add(state);
-    }
-
     public List<ItemModel> loadItems(){
         List<ItemModel> itemModelList = itemDao.getAll(1);
         return itemModelList;
     };
+
+    public void save(Player player, String currentMap, String saveName, List<Enemy> enemies, List<Item> items) {
+        PlayerModel playerModel = new PlayerModel(player);
+        playerModel.setPlayerName(saveName);
+        playerDao.add(playerModel);
+        GameState gameModel = new GameState(currentMap, playerModel);
+        gameStateDao.add(gameModel);
+        items.forEach(item -> saveItem(item, gameModel));
+        enemies.forEach(enemy -> saveEnemy(enemy, gameModel));
+    }
 
 
 }

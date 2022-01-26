@@ -71,7 +71,7 @@ public class Main extends Application {
         saveButton.setFocusTraversable(false);
         loadButton.setFocusTraversable(false);
         saveButton.setOnAction(e -> displaySaveButton());
-        loadButton.setOnAction(e -> displayLoadButton());
+        loadButton.setOnAction(e -> LoadGame());
 
         BorderPane borderPane = new BorderPane();
         ui.add(alertLabel, 0, 0);
@@ -122,30 +122,6 @@ public class Main extends Application {
                 map.moveEnemies();
                 refresh();
                 break;
-            case S:
-                Player player = map.getPlayer();
-                PlayerModel model = new PlayerModel(player);
-                dbManager.savePlayer(model);
-                GameState state = new GameState(level, model);
-                dbManager.saveGameState(state);
-               List<Item> items = map.getItem();
-               items.forEach(item -> dbManager.saveItem(item, state));
-                List<Enemy> enemies = map.getEnemies();
-                for (Enemy enemy : enemies){
-                    dbManager.saveEnemy(enemy, state);
-                }
-
-
-                break;
-            case L:
-                PlayerModel data = dbManager.loadPlayer();
-                Cell playerCell = new Cell(map, data.getX(), data.getY(), CellType.FLOOR);
-                Player gamer = new Player(playerCell);
-                gamer.setHealth(data.getHp());
-                gamer.setStrength(data.getStrength());
-                map.setPlayer(gamer);
-                List<EnemyModel> enemyList = dbManager.loadEnemies();
-                List<ItemModel> itemList = dbManager.loadItems();
         }
     }
 
@@ -248,7 +224,7 @@ public class Main extends Application {
         }
     }
 
-    public static void displaySaveButton() {
+    public void displaySaveButton() {
         TextField nameInput = new TextField();
         Button save = new Button("Save");
         Button cancel = new Button("Cancel");
@@ -256,26 +232,39 @@ public class Main extends Application {
         layout.getChildren().addAll(nameInput, save, cancel);
         Scene saveScene = new Scene(layout, 350, 150);
         Stage saveStage = new Stage();
+        saveScene.getStylesheets().add("app.css");
         saveStage.setTitle("Save game");
         saveStage.setScene(saveScene);
         saveStage.show();
         save.setOnAction(e -> saveGame(saveStage, nameInput));
         cancel.setOnAction(e -> saveStage.close());
-
     }
 
-    private static void saveGame(Stage saveStage, TextField nameInput) {
+    private void saveGame(Stage saveStage, TextField nameInput) {
         String saveName = nameInput.getText();
         System.out.println(saveName);
         saveStage.close();
+        Player player = map.getPlayer();
+        List<Item> items = map.getItem();
+        List<Enemy> enemies = map.getEnemies();
+        dbManager.save(player, level, saveName, enemies, items);
     }
 
-    public static void displayLoadButton() {
+    public void LoadGame() {
         Optional<String> choice = getSaveChoiceFromUser();
-        System.out.println(choice);
+        String loadedName = choice.get();
+        PlayerModel data = dbManager.loadPlayer(loadedName);
+        Cell playerCell = new Cell(map, data.getX(), data.getY(), CellType.FLOOR);
+        Player gamer = new Player(playerCell);
+        gamer.setHealth(data.getHp());
+        gamer.setStrength(data.getStrength());
+        map.setPlayer(gamer);
+        List<EnemyModel> enemyList = dbManager.loadEnemies();
+        List<ItemModel> itemList = dbManager.loadItems();
+
     }
 
-    public static Optional<String> getSaveChoiceFromUser() {
+    public Optional<String> getSaveChoiceFromUser() {
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>();
         choiceDialog.setTitle("Load Game");
         choiceDialog.getItems().addAll("a","v");
