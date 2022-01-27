@@ -13,12 +13,6 @@ public class MapLoaderTest {
         GameMap map = MapLoader.loadMap("/map.txt");
         assertNotNull(map);
     }
-
-    @Test
-    void loadMap_wrongMapText(){
-        GameMap map = MapLoader.loadMap("");
-        assertNull(map);
-    }
 }
 
 

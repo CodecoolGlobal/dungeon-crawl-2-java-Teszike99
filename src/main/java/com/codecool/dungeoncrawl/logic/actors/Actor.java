@@ -45,7 +45,6 @@ public abstract class Actor implements Drawable {
         player.setHealth(player.getHealth() - enemyStrength);
         enemy.setHealth(enemy.getHealth() - playerStrength);
         cell.getGameMap().checkEnemyDeath((Enemy)enemy);
-
     }
 
     protected abstract int getStrength();
