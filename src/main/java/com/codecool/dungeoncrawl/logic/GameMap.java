@@ -96,6 +96,22 @@ public class GameMap {
     public void setItemList(List<Item> newItemList){
         this.itemList = newItemList;
     }
+
+    public void changeEnemyList(List<Enemy> enemyList) {
+        this.enemy = enemyList;
+    }
+
+    public void changeItemList(List<Item> itemList) {
+        this.itemList = itemList;
+    }
+
+    public void removeItemList() {
+        itemList = null;
+    }
+
+    public void removeEnemyList() {
+        enemy = null;
+    }
 }
 
 

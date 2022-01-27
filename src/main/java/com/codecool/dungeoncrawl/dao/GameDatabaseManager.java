@@ -20,6 +20,10 @@ public class GameDatabaseManager {
     private EnemyDao enemyDao;
     private ItemDao itemDao;
     private GameStateDao gameStateDao;
+    private PlayerModel loadedPlayer;
+    private List<EnemyModel>  loadedEnemies;
+    private GameState loadedGameState;
+    private List<ItemModel> loadedItems;
 
     public void setup() throws SQLException {
         DataSource dataSource = connect();
@@ -27,9 +31,7 @@ public class GameDatabaseManager {
         enemyDao = new EnemyDaoJdbc(dataSource);
         gameStateDao = new GameStateDaoJdbc(dataSource);
         itemDao = new ItemDaoJdbc(dataSource);
-
     }
-
 
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
@@ -48,31 +50,6 @@ public class GameDatabaseManager {
         return dataSource;
     }
 
-    public void saveEnemy(Enemy enemy, GameState state) {
-        EnemyModel model = new EnemyModel(enemy);
-        enemyDao.add(model, state);
-    }
-
-    public void saveItem(Item item, GameState state){
-        ItemModel ItemModel = new ItemModel(item);
-        itemDao.add(ItemModel, state);
-    }
-
-    public PlayerModel loadPlayer(String loadedName){
-        PlayerModel player = playerDao.get(loadedName);
-        return player;
-    }
-
-    public List<EnemyModel> loadEnemies() {
-        List<EnemyModel> enemyList = enemyDao.getAll(1);
-        return enemyList;
-    }
-
-    public List<ItemModel> loadItems(){
-        List<ItemModel> itemModelList = itemDao.getAll(1);
-        return itemModelList;
-    };
-
     public void save(Player player, String currentMap, String saveName, List<Enemy> enemies, List<Item> items) {
         PlayerModel playerModel = new PlayerModel(player);
         playerModel.setPlayerName(saveName);
@@ -83,9 +60,42 @@ public class GameDatabaseManager {
         enemies.forEach(enemy -> saveEnemy(enemy, gameModel));
     }
 
+    public void saveEnemy(Enemy enemy, GameState state) {
+        EnemyModel model = new EnemyModel(enemy);
+        enemyDao.add(model, state);
+    }
+
+    public void saveItem(Item item, GameState state){
+        ItemModel ItemModel = new ItemModel(item);
+        itemDao.add(ItemModel, state);
+    }
+
+
+    public void load(String loadedName){
+        this.loadedPlayer = playerDao.get(loadedName);
+        this.loadedGameState = gameStateDao.get(loadedPlayer.getId());
+        this.loadedEnemies = enemyDao.getAll(loadedGameState.getId());
+        this.loadedItems = itemDao.getAll(loadedGameState.getId());
+    }
+
+    public PlayerModel getLoadedPlayer() {
+        return loadedPlayer;
+    }
+
+    public List<EnemyModel> getLoadedEnemies() {
+        return loadedEnemies;
+    }
+
+    public GameState getLoadedGameState() {
+        return loadedGameState;
+    }
+
+    public List<ItemModel> getLoadedItems() {
+        return loadedItems;
+    }
+
     public Set<String> loadChoices() {
         return playerDao.getAll().stream().map(PlayerModel::getPlayerName).collect(Collectors.toSet());
     }
-
 
 }

@@ -6,12 +6,7 @@ import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.Items.Item;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Enemy;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.model.EnemyModel;
-import com.codecool.dungeoncrawl.model.GameState;
-import com.codecool.dungeoncrawl.model.ItemModel;
-import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -32,10 +27,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+
+import static com.codecool.dungeoncrawl.logic.MapLoader.createMapFromDb;
 
 
 public class Main extends Application {
@@ -198,7 +192,8 @@ public class Main extends Application {
     private void checkWin() {
         Player player = map.getPlayer();
         if (player.getCell().getType() == CellType.GOAL){
-            map = MapLoader.loadMap("/win.txt");
+            level = "/win.txt";
+            map = MapLoader.loadMap(level);
         }
     }
 
@@ -206,14 +201,15 @@ public class Main extends Application {
     private void changeMap() {
         if (Objects.equals(map.getPlayer().getCell().getTileName(), "stairs")) {
             level = "/map2.txt";
-            map = MapLoader.loadMap("/map2.txt");
+            map = MapLoader.loadMap(level);
         }
     }
 
     private void checkLose() {
         Player player = map.getPlayer();
         if (map.checkPlayerDeath(player)) {
-            map = MapLoader.loadMap("/lose.txt");
+            level = "/lose.txt";
+            map = MapLoader.loadMap(level);
         }
     }
 
@@ -256,16 +252,11 @@ public class Main extends Application {
     public void LoadGame() {
         Optional<String> choice = getSaveChoiceFromUser();
         String loadedName = choice.get();
-        PlayerModel data = dbManager.loadPlayer(loadedName);
-        Cell playerCell = new Cell(map, data.getX(), data.getY(), CellType.FLOOR);
-        Player gamer = new Player(playerCell);
-        gamer.setHealth(data.getHp());
-        gamer.setStrength(data.getStrength());
-        map.setPlayer(gamer);
-        List<EnemyModel> enemyList = dbManager.loadEnemies();
-        List<ItemModel> itemList = dbManager.loadItems();
-
+        dbManager.load(loadedName);
+        map = createMapFromDb(dbManager);
+        refresh();
     }
+
 
     public Optional<String> getSaveChoiceFromUser() {
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>();
