@@ -38,8 +38,8 @@ import java.util.*;
 
 
 public class Main extends Application {
-    String level = "/map.txt";
-    GameMap map = MapLoader.loadMap(level);
+    String level;
+    GameMap map;
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -56,6 +56,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        level = "/map.txt";
+        map = MapLoader.loadMap(level);
         setupDbManager();
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
@@ -270,6 +272,7 @@ public class Main extends Application {
         Player gamer = new Player(playerCell);
         gamer.setHealth(data.getHp());
         gamer.setStrength(data.getStrength());
+        map.setPlayer(gamer);
     }
 
     private void createItemList(ItemModel itemModel) {
