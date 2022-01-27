@@ -266,10 +266,12 @@ public class Main extends Application {
         for (Enemy enemy : enemies ) {
             enemy.getCell().setActor(null);
         }
+        map.removeEnemyList();
         List<Item> items = map.getItemList();
         for (Item item : items ) {
             item.getCell().setItem(null);
         }
+        map.removeItemList();
         createPlayer(data);
         List<EnemyModel> enemyModels = dbManager.loadEnemies();
         createEnemyList(enemyModels);
@@ -290,7 +292,7 @@ public class Main extends Application {
     private void createItemList(List<ItemModel> itemModels) {
         List<Item> itemList = new ArrayList<>();
         for (ItemModel itemModel : itemModels) {
-            Cell itemCell = new Cell(map, itemModel.getX(), itemModel.getY(), CellType.FLOOR);
+            Cell itemCell = map.getCell(itemModel.getX(), itemModel.getY());
             if (itemModel.getName().equals("uzi")) {
                 Item uzi = new Sword(itemCell);
                 itemList.add(uzi);
@@ -311,7 +313,7 @@ public class Main extends Application {
     private void createEnemyList(List<EnemyModel> enemyModels) {
         List<Enemy> enemyList = new ArrayList<>();
         for (EnemyModel enemyModel: enemyModels) {
-            Cell enemyCell = new Cell(map, enemyModel.getX(), enemyModel.getY(), CellType.FLOOR);
+            Cell enemyCell = map.getCell(enemyModel.getX(), enemyModel.getY());
             if (enemyModel.getName().equals("ghost")) {
                 Enemy ghost = new Ghost(enemyCell);
                 enemyList.add(ghost);
