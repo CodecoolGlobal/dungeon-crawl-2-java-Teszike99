@@ -43,7 +43,7 @@ public class EnemyDaoJdbc implements EnemyDao{
     @Override
     public List<EnemyModel> getAll(int id) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT enemy_name, strength, hp, x, y FROM enemy INNER JOIN game_state ON game_state.id = enemy.game_state_id INNER JOIN game_state ON game_state.player_id = ?";
+            String sql = "SELECT enemy_name, strength, hp, x, y FROM enemy WHERE game_state_id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();

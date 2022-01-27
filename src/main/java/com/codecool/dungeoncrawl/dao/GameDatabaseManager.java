@@ -88,4 +88,9 @@ public class GameDatabaseManager {
     }
 
 
+    public GameState loadMap(int id) {
+        GameState gameState = gameStateDao.get(id);
+        return gameState;
+
+    }
 }
