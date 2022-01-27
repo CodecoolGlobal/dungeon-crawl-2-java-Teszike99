@@ -271,9 +271,9 @@ public class Main extends Application {
             item.getCell().setItem(null);
         }
         createPlayer(data);
-        List<EnemyModel> enemyModels = dbManager.loadEnemies();
+        List<EnemyModel> enemyModels = dbManager.loadEnemies(loadMap.getId());
         createEnemyList(enemyModels);
-        List<ItemModel> itemModels = dbManager.loadItems();
+        List<ItemModel> itemModels = dbManager.loadItems(loadMap.getId());
         createItemList(itemModels);
         refresh();
     }

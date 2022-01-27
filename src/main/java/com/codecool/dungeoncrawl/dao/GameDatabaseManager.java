@@ -63,13 +63,13 @@ public class GameDatabaseManager {
         return player;
     }
 
-    public List<EnemyModel> loadEnemies() {
-        List<EnemyModel> enemyList = enemyDao.getAll(1);
+    public List<EnemyModel> loadEnemies(int id) {
+        List<EnemyModel> enemyList = enemyDao.getAll(id);
         return enemyList;
     }
 
-    public List<ItemModel> loadItems(){
-        List<ItemModel> itemModelList = itemDao.getAll(1);
+    public List<ItemModel> loadItems(int id){
+        List<ItemModel> itemModelList = itemDao.getAll(id);
         return itemModelList;
     };
 
