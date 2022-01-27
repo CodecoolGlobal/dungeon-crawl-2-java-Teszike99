@@ -266,12 +266,10 @@ public class Main extends Application {
         for (Enemy enemy : enemies ) {
             enemy.getCell().setActor(null);
         }
-        map.removeEnemyList();
         List<Item> items = map.getItemList();
         for (Item item : items ) {
             item.getCell().setItem(null);
         }
-        map.removeItemList();
         createPlayer(data);
         List<EnemyModel> enemyModels = dbManager.loadEnemies();
         createEnemyList(enemyModels);
@@ -281,7 +279,7 @@ public class Main extends Application {
     }
 
     private void createPlayer(PlayerModel data) {
-        Cell playerCell = new Cell(map, data.getX(), data.getY(), CellType.FLOOR);
+        Cell playerCell = map.getCell(data.getX(), data.getY());
         Player gamer = new Player(playerCell);
         gamer.setHealth(data.getHp());
         gamer.setStrength(data.getStrength());
