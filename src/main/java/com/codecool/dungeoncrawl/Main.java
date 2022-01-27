@@ -36,6 +36,8 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.util.*;
 
+import static com.codecool.dungeoncrawl.logic.MapLoader.createMapFromDb;
+
 
 public class Main extends Application {
     String level = "/map.txt";
@@ -258,78 +260,10 @@ public class Main extends Application {
         Optional<String> choice = getSaveChoiceFromUser();
         String loadedName = choice.get();
         dbManager.load(loadedName);
-        PlayerModel data = dbManager.loadPlayer(loadedName);
-        GameState loadMap = dbManager.loadMap(data.getId());
-        map = MapLoader.loadMap(loadMap.getCurrentMap());
-        map.getPlayer().getCell().setActor(null);
-        List<Enemy> enemies = map.getEnemies();
-        for (Enemy enemy : enemies ) {
-            enemy.getCell().setActor(null);
-        }
-        List<Item> items = map.getItemList();
-        for (Item item : items ) {
-            item.getCell().setItem(null);
-        }
-        createPlayer(data);
-        List<EnemyModel> enemyModels = dbManager.loadEnemies(loadMap.getId());
-        createEnemyList(enemyModels);
-        List<ItemModel> itemModels = dbManager.loadItems(loadMap.getId());
-        createItemList(itemModels);
+        map = createMapFromDb(dbManager);
         refresh();
     }
 
-    private void createPlayer(PlayerModel data) {
-        Cell playerCell = map.getCell(data.getX(), data.getY());
-        Player gamer = new Player(playerCell);
-        gamer.setHealth(data.getHp());
-        gamer.setStrength(data.getStrength());
-        playerCell.setActor(gamer);
-        map.setPlayer(gamer);
-    }
-
-    private void createItemList(List<ItemModel> itemModels) {
-        List<Item> itemList = new ArrayList<>();
-        for (ItemModel itemModel : itemModels) {
-            Cell itemCell = map.getCell(itemModel.getX(), itemModel.getY());
-            if (itemModel.getName().equals("uzi")) {
-                Item uzi = new Sword(itemCell);
-                itemList.add(uzi);
-                itemCell.setItem(uzi);
-            } else if (itemModel.getName().equals("cola")) {
-                Item cola = new Potion(itemCell);
-                itemList.add(cola);
-                itemCell.setItem(cola);
-            } else if (itemModel.getName().equals("key")) {
-                Item key = new Key(itemCell);
-                itemList.add(key);
-                itemCell.setItem(key);
-            }
-        }
-        map.changeItemList(itemList);
-    }
-
-    private void createEnemyList(List<EnemyModel> enemyModels) {
-        List<Enemy> enemyList = new ArrayList<>();
-        for (EnemyModel enemyModel: enemyModels) {
-            Cell enemyCell = map.getCell(enemyModel.getX(), enemyModel.getY());
-            if (enemyModel.getName().equals("ghost")) {
-                Enemy ghost = new Ghost(enemyCell);
-                enemyList.add(ghost);
-                enemyCell.setActor(ghost);
-            } else if (enemyModel.getName().equals("LazyWitch")) {
-                Enemy lazyWitch = new LazyWitch(enemyCell);
-                enemyList.add(lazyWitch);
-                enemyCell.setActor(lazyWitch);
-            } else {
-                Enemy skeleton = new Skeleton(enemyCell);
-                enemyList.add(skeleton);
-                enemyCell.setActor(skeleton);
-            }
-        }
-        map.changeEnemyList(enemyList);
-
-
-    }
 
     public Optional<String> getSaveChoiceFromUser() {
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>();

@@ -20,6 +20,10 @@ public class GameDatabaseManager {
     private EnemyDao enemyDao;
     private ItemDao itemDao;
     private GameStateDao gameStateDao;
+    private PlayerModel loadedPlayer;
+    private List<EnemyModel>  loadedEnemies;
+    private GameState loadedGameState;
+    private List<ItemModel> loadedItems;
 
     public void setup() throws SQLException {
         DataSource dataSource = connect();
@@ -84,7 +88,26 @@ public class GameDatabaseManager {
     }
 
     public void load(String loadedName){
+        this.loadedPlayer = playerDao.get(loadedName);
+        this.loadedGameState = gameStateDao.get(loadedPlayer.getId());
+        this.loadedEnemies = enemyDao.getAll(loadedGameState.getId());
+        this.loadedItems = itemDao.getAll(loadedGameState.getId());
+    }
 
+    public PlayerModel getLoadedPlayer() {
+        return loadedPlayer;
+    }
+
+    public List<EnemyModel> getLoadedEnemies() {
+        return loadedEnemies;
+    }
+
+    public GameState getLoadedGameState() {
+        return loadedGameState;
+    }
+
+    public List<ItemModel> getLoadedItems() {
+        return loadedItems;
     }
 
     public Set<String> loadChoices() {
