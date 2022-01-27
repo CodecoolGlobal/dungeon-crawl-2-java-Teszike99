@@ -10,6 +10,7 @@ public class GameState extends BaseModel {
     private String currentMap;
     private List<String> discoveredMaps = new ArrayList<>();
     private PlayerModel player;
+    private int gameStateId;
 
     public GameState(String currentMap, PlayerModel player) {
         this.currentMap = currentMap;
@@ -52,5 +53,9 @@ public class GameState extends BaseModel {
 
     public void setPlayer(PlayerModel player) {
         this.player = player;
+    }
+
+    public void setGameStateId(int gameStateId) {
+        this.gameStateId = gameStateId;
     }
 }

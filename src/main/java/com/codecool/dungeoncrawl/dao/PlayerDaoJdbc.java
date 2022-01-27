@@ -36,6 +36,19 @@ public class PlayerDaoJdbc implements PlayerDao {
 
     @Override
     public void update(PlayerModel player) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "UPDATE player SET hp = ?, strength = ?, x = ?, y = ?, inventory = ? WHERE player_name = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, player.getHp());
+            statement.setInt(2,player.getStrength());
+            statement.setInt(3, player.getX());
+            statement.setInt(4, player.getY());
+            statement.setString(5, player.getPlayerName());
+            statement.setString(6, player.getInventory().toString());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -72,4 +85,5 @@ public class PlayerDaoJdbc implements PlayerDao {
             throw new RuntimeException("Error while reading all players", e);
         }
     }
+
 }

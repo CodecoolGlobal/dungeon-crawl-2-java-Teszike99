@@ -98,4 +98,21 @@ public class GameDatabaseManager {
         return playerDao.getAll().stream().map(PlayerModel::getPlayerName).collect(Collectors.toSet());
     }
 
+    public void update(Player player, String currentMap, String saveName, List<Enemy> enemies, List<Item> items) {
+
+        PlayerModel playerModel = new PlayerModel(player);
+        GameState gameModel = new GameState(currentMap, playerModel);
+        int gameStateId = gameStateDao.getGameStateId(playerModel.getId());
+        playerModel.setPlayerName(saveName);
+        playerDao.update(playerModel);
+        playerModel.setGameStateId(gameStateId);
+        gameModel.setGameStateId(gameStateId);
+        gameStateDao.update(gameModel);
+        itemDao.deleteAllWithGameStateId(gameStateId);
+        items.forEach(item -> saveItem(item, gameModel));
+        enemyDao.deleteAllWithGameStateId(gameStateId);
+        enemies.forEach(enemy -> saveEnemy(enemy, gameModel));
+
+    }
+
 }

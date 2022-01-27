@@ -241,12 +241,16 @@ public class Main extends Application {
 
     private void saveGame(Stage saveStage, TextField nameInput) {
         String saveName = nameInput.getText();
-        System.out.println(saveName);
         saveStage.close();
         Player player = map.getPlayer();
         List<Item> items = map.getItemList();
         List<Enemy> enemies = map.getEnemies();
-        dbManager.save(player, level, saveName, enemies, items);
+        if (checkPlayerName(saveName)) {
+            dbManager.update(player,level,saveName, enemies, items);
+        }
+        else {
+            dbManager.save(player, level, saveName, enemies, items);
+        }
     }
 
     public void LoadGame() {
@@ -266,6 +270,10 @@ public class Main extends Application {
         choiceDialog.getDialogPane().setContentText("Player name: ");
         Optional<String> choice = choiceDialog.showAndWait();
         return choice;
+    }
+
+    public boolean checkPlayerName (String playerName) {
+        return dbManager.loadChoices().contains(playerName);
     }
 
     private void exit() {

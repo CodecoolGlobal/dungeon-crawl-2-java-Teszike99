@@ -11,4 +11,5 @@ public interface EnemyDao {
     void add(EnemyModel enemy, GameState state);
     void update(EnemyModel enemy);
     List<EnemyModel> getAll(int id);
+    void deleteAllWithGameStateId(int gameStateId);
 }
