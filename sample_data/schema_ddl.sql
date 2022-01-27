@@ -13,7 +13,8 @@ CREATE TABLE public.player (
     hp integer NOT NULL,
     strength integer NOT NULL,
     x integer NOT NULL,
-    y integer NOT NULL
+    y integer NOT NULL,
+    inventory text
 );
 
 DROP TABLE IF EXISTS public.enemy;

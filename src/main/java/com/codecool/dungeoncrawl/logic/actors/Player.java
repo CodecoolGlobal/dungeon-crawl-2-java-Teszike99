@@ -8,6 +8,7 @@ import com.codecool.dungeoncrawl.logic.Items.Item;
 
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class Player extends Actor {
 
@@ -25,6 +26,9 @@ public class Player extends Actor {
     public int getStrength() {
         return strength;
     }
+
+    public List<String> getInventory(){
+        return playerInventory;}
 
     @Override
     public int getHealth() {
@@ -95,6 +99,7 @@ public class Player extends Actor {
     private void openDoor(Cell nextCell){
         if(nextCell.getType() == CellType.CLOSEDOOR){
             nextCell.setDoor(null);
+            playerInventory.remove("key");
             nextCell.setType(CellType.OPENDOOR);
         }
 

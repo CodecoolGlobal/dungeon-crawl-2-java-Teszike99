@@ -27,7 +27,7 @@ public class MapLoader {
                     switch (line.charAt(x)) {
                         case 'o':
                             cell.setType(CellType.OPENDOOR);
-                            new OpenDoor(cell);
+                            new OpenedDoor(cell);
                             break;
                         case 'c':
                             cell.setType(CellType.CLOSEDOOR);
@@ -51,12 +51,10 @@ public class MapLoader {
                             cell.setType(CellType.WALL);
                             break;
                         case 'v':
-                            cell.setType(CellType.WALL);
-                            new Car(cell);
+                            cell.setType(CellType.CAR);
                             break;
                         case 'h':
-                            cell.setType(CellType.WALL);
-                            new House(cell);
+                            cell.setType(CellType.HOUSE);
                             break;
                         case '.':
                             cell.setType(CellType.FLOOR);
