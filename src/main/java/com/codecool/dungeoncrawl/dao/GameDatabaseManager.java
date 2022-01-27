@@ -104,7 +104,6 @@ public class GameDatabaseManager {
         PlayerModel playerModel = new PlayerModel(player);
         playerModel.setId(playerId);
         GameState gameModel = new GameState(currentMap, playerModel);
-        playerModel.setPlayerName(saveName);
         playerDao.update(playerModel);
         gameModel.setId(gameStateId);
         gameStateDao.update(gameModel);

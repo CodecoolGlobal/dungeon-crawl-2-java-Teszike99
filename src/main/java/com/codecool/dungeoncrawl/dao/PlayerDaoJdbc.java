@@ -43,8 +43,8 @@ public class PlayerDaoJdbc implements PlayerDao {
             statement.setInt(2,player.getStrength());
             statement.setInt(3, player.getX());
             statement.setInt(4, player.getY());
-            statement.setString(5, player.getPlayerName());
-            statement.setString(6, player.getInventory().toString());
+            statement.setString(5, player.getInventory().toString());
+            statement.setString(6, player.getPlayerName());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
