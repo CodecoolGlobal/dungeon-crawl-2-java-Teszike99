@@ -58,9 +58,10 @@ public class Main extends Application {
 
         ui.add(new Label("Health: "), 0, 3);
         ui.add(new Label("Items: "), 0, 6);
-        ui.add(new Label(""), 1, 6);
-        ui.add(saveButton, 1, 7);
-        ui.add(loadButton,1,8);
+        ui.add(new Label(""), 1, 7);
+        ui.add(saveButton, 0, 8);
+        ui.add(new Label(""), 0, 9);
+        ui.add(loadButton,0,10);
 
         saveButton.setFocusTraversable(false);
         loadButton.setFocusTraversable(false);
