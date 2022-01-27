@@ -103,6 +103,7 @@ public class GameDatabaseManager {
         int gameStateId = gameStateDao.getGameStateId(playerId);
         PlayerModel playerModel = new PlayerModel(player);
         playerModel.setId(playerId);
+        playerModel.setPlayerName(saveName);
         GameState gameModel = new GameState(currentMap, playerModel);
         playerDao.update(playerModel);
         gameModel.setId(gameStateId);

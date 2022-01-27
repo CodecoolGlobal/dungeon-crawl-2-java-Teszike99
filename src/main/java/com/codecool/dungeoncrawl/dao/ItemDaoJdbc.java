@@ -60,7 +60,7 @@ public class ItemDaoJdbc implements ItemDao {
     @Override
     public void deleteAllWithGameStateId(int gameStateId){
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "DELETE FROM enemy WHERE game_state_id = ?";
+            String sql = "DELETE FROM item WHERE game_state_id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, gameStateId);
             statement.executeUpdate();
