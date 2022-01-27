@@ -6,6 +6,7 @@ public class ItemModel extends BaseModel {
     private String name;
     private int x;
     private int y;
+    public int gameStateId;
 
     public ItemModel(String name, int x, int y) {
         this.name = name;
@@ -31,5 +32,9 @@ public class ItemModel extends BaseModel {
 
     public int getY() {
         return y;
+    }
+
+    public void setGameStateId(int gameStateId) {
+        this.gameStateId = gameStateId;
     }
 }

@@ -8,5 +8,6 @@ public interface GameStateDao {
     void add(GameState state);
     void update(GameState state);
     GameState get(int id);
+    int getGameStateId(int playerId);
     List<GameState> getAll();
 }

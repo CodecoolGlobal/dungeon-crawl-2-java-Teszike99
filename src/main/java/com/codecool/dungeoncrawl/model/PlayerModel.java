@@ -11,6 +11,7 @@ public class PlayerModel extends BaseModel {
     private int y;
     private int strength;
     private List<String> inventory;
+    private int gameStateId;
 
     public PlayerModel(String playerName, int hp, int strength, int x, int y) {
         this.playerName = playerName;
@@ -67,5 +68,9 @@ public class PlayerModel extends BaseModel {
 
     public List<String> getInventory(){
         return inventory;
+    }
+
+    public void setGameStateId(int gameStateId) {
+        this.gameStateId = gameStateId;
     }
 }

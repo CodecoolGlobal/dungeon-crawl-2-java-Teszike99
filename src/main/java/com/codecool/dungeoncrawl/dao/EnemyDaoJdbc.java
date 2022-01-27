@@ -62,5 +62,20 @@ public class EnemyDaoJdbc implements EnemyDao{
             throw new RuntimeException("Error while reading author with id: " + id, e);
         }
     }
+
+    @Override
+    public void deleteAllWithGameStateId(int gameStateId){
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "DELETE FROM enemy WHERE game_state_id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, gameStateId);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
 

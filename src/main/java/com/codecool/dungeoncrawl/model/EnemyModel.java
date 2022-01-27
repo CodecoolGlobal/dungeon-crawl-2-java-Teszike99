@@ -9,6 +9,7 @@ public class EnemyModel extends BaseModel {
     private int y;
     private int hp;
     private int strength;
+    private int gameStateId;
 
     public EnemyModel(String name, int strength, int hp, int x, int y) {
         this.name = name;
@@ -44,5 +45,9 @@ public class EnemyModel extends BaseModel {
 
     public int getStrength() {
         return strength;
+    }
+
+    public void setGameStateId(int gameStateId) {
+        this.gameStateId = gameStateId;
     }
 }

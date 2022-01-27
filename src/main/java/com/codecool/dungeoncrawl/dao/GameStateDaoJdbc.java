@@ -1,11 +1,9 @@
 package com.codecool.dungeoncrawl.dao;
 
 import com.codecool.dungeoncrawl.model.GameState;
-import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameStateDaoJdbc implements GameStateDao {
@@ -34,7 +32,16 @@ public class GameStateDaoJdbc implements GameStateDao {
 
     @Override
     public void update(GameState state) {
-
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "UPDATE game_state SET current_map = ?, saved_at = ? WHERE player_id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, state.getCurrentMap());
+            statement.setDate(2, state.getSavedAt());
+            statement.setInt(3, state.getPlayer().getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -52,6 +59,19 @@ public class GameStateDaoJdbc implements GameStateDao {
             return gameState;
         } catch (SQLException e) {
             throw new RuntimeException("Error while reading author with id: " + id, e);
+        }
+    }
+
+    public int getGameStateId(int playerId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT id FROM game_state WHERE player_id = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, playerId);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading author with id: " + playerId, e);
         }
     }
 

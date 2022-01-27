@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ItemDao {
     void add(ItemModel item, GameState state);
-
+    void deleteAllWithGameStateId(int gameStateId);
     List<ItemModel> getAll(int i);
 }
