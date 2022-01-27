@@ -83,6 +83,10 @@ public class GameDatabaseManager {
         enemies.forEach(enemy -> saveEnemy(enemy, gameModel));
     }
 
+    public void load(String loadedName){
+
+    }
+
     public Set<String> loadChoices() {
         return playerDao.getAll().stream().map(PlayerModel::getPlayerName).collect(Collectors.toSet());
     }

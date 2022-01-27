@@ -102,7 +102,7 @@ public class GameMap {
     }
 
     public void changeItemList(List<Item> itemList) {
-        this.item = itemList;
+        this.itemList = itemList;
     }
 }
 
