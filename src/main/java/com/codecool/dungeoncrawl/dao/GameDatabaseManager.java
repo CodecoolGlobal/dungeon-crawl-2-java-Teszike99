@@ -99,14 +99,14 @@ public class GameDatabaseManager {
     }
 
     public void update(Player player, String currentMap, String saveName, List<Enemy> enemies, List<Item> items) {
-
+        int playerId = playerDao.getPlayerId(saveName);
+        int gameStateId = gameStateDao.getGameStateId(playerId);
         PlayerModel playerModel = new PlayerModel(player);
+        playerModel.setId(playerId);
         GameState gameModel = new GameState(currentMap, playerModel);
-        int gameStateId = gameStateDao.getGameStateId(playerModel.getId());
         playerModel.setPlayerName(saveName);
         playerDao.update(playerModel);
-        playerModel.setGameStateId(gameStateId);
-        gameModel.setGameStateId(gameStateId);
+        gameModel.setId(gameStateId);
         gameStateDao.update(gameModel);
         itemDao.deleteAllWithGameStateId(gameStateId);
         items.forEach(item -> saveItem(item, gameModel));

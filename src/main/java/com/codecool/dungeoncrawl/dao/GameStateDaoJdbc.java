@@ -33,12 +33,11 @@ public class GameStateDaoJdbc implements GameStateDao {
     @Override
     public void update(GameState state) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "UPDATE game_state SET current_map = ?, saved_at = ?, id = ?WHERE id = ?";
+            String sql = "UPDATE game_state SET current_map = ?, saved_at = ? WHERE player_id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, state.getCurrentMap());
             statement.setDate(2, state.getSavedAt());
-            statement.setInt(3, state.getId());
-            statement.setInt(4, state.getPlayer().getId());
+            statement.setInt(3, state.getPlayer().getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -69,6 +68,7 @@ public class GameStateDaoJdbc implements GameStateDao {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, playerId);
             ResultSet rs = st.executeQuery();
+            rs.next();
             return rs.getInt(1);
         } catch (SQLException e) {
             throw new RuntimeException("Error while reading author with id: " + playerId, e);
