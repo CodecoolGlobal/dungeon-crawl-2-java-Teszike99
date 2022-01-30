@@ -52,42 +52,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         setupDbManager();
-        GridPane ui = new GridPane();
-        ui.setPrefWidth(200);
-        ui.setPadding(new Insets(10));
-
-        ui.add(new Label("Health: "), 0, 3);
-        ui.add(new Label("Items: "), 0, 6);
-        ui.add(new Label(""), 1, 6);
-        ui.add(new Label(""), 1, 7);
-        ui.add(saveButton, 0, 8);
-        ui.add(new Label(""), 0, 9);
-        ui.add(loadButton,0,10);
-
-        saveButton.setFocusTraversable(false);
-        loadButton.setFocusTraversable(false);
-        saveButton.setOnAction(e -> displaySaveButton());
-        loadButton.setOnAction(e -> LoadGame());
-
-        BorderPane borderPane = new BorderPane();
-        ui.add(alertLabel, 0, 0);
-        ui.add(healthLabel, 1, 3);
-        ui.add(inventoryLabel, 1, 6);
-        borderPane.setCenter(canvas);
-        borderPane.setRight(ui);
-
-        Scene scene = new Scene(borderPane);
-        scene.getStylesheets().add("app.css");
-        primaryStage.setScene(scene);
-        refresh();
-        scene.setOnKeyPressed(this::onKeyPressed);
-        primaryStage.setScene(scene);
-        refresh();
-        scene.setOnKeyPressed(this::onKeyPressed);
-        scene.setOnKeyReleased(this::onKeyReleased);
-
-        primaryStage.setTitle("Dungeon Crawl");
-        primaryStage.show();
+        canvas = Display.createCanvas(primaryStage, map);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
