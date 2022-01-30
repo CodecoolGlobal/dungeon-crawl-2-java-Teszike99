@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 
 public abstract class Enemy extends Actor{
+    boolean removeAble = false;
 
 
     public Enemy(Cell cell) {
@@ -15,12 +16,21 @@ public abstract class Enemy extends Actor{
     public boolean checkAttack(Actor player){
         return player instanceof Player;
     }
+    public boolean checkEnemy(Actor enemy){
+        return enemy instanceof Enemy;
+    }
 
     public abstract int getStrength();
 
     public abstract int getHealth();
 
-    protected abstract void setHealth(int newHealth);
+    public abstract void setHealth(int newHealth);
 
+    public boolean isRemoveAble() {
+        return removeAble;
+    }
 
+    public void setRemoveAble() {
+        this.removeAble = true;
+    }
 }

@@ -9,10 +9,10 @@ class CellTest {
 
     @Test
     void getNeighbor() {
-        Cell cell = map.getCell(1, 1);
+        Cell cell = map.getCell(2, 2);
         Cell neighbor = cell.getNeighbor(-1, 0);
-        assertEquals(0, neighbor.getX());
-        assertEquals(1, neighbor.getY());
+        assertEquals(1, neighbor.getX());
+        assertEquals(2, neighbor.getY());
     }
 
     @Test

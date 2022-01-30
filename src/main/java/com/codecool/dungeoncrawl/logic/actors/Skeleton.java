@@ -24,15 +24,13 @@ public class Skeleton extends Enemy {
     @Override
     public void move() {
         Cell randomMove = getRandomMove();
-        Actor player = randomMove.getActor();
-        if (checkEmptyField(randomMove.getType())){
-            if (checkAttack(player)){
-                attack(this);
-            }else {
+        Actor attacked = randomMove.getActor();
+            if (checkAttack(attacked)){
+                attack(this, attacked);
+            }else if (!(checkEnemy(attacked))) {
                 move(randomMove);
             }
         }
-    }
 
     @Override
     public int getStrength() {
@@ -45,7 +43,7 @@ public class Skeleton extends Enemy {
     }
 
     @Override
-    protected void setHealth(int newHealth) {
+    public void setHealth(int newHealth) {
         health = newHealth;
     }
 

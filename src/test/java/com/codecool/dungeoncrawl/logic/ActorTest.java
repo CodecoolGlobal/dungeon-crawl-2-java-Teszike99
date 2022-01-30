@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import org.junit.jupiter.api.Test;
@@ -32,15 +33,17 @@ class ActorTest {
 
 
     @Test
-    void cannotMoveIntoAnotherActor() {
+    void player_move_cannotMoveIntoAnotherActor() {
         Player player = new Player(gameMap.getCell(1, 1));
-        Skeleton skeleton = new Skeleton(gameMap.getCell(2, 1));
+        Ghost ghost = new Ghost(gameMap.getCell(2, 1));
+        Skeleton skeleton = new Skeleton(gameMap.getCell(2,2));
         player.move(1, 0);
 
         assertEquals(1, player.getX());
         assertEquals(1, player.getY());
-        assertEquals(2, skeleton.getX());
-        assertEquals(1, skeleton.getY());
-        assertEquals(skeleton, gameMap.getCell(2, 1).getActor());
+        assertEquals(2, ghost.getX());
+        assertEquals(1, ghost.getY());
+        assertEquals(ghost, gameMap.getCell(2, 1).getActor());
+        assertEquals(1, player.getX());
     }
 }

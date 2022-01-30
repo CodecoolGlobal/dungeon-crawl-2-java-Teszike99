@@ -182,8 +182,7 @@ public class Main extends Application {
             }
         }
 
-        Boolean isItem = map.getPlayer().checkItem();
-        if (isItem == true){
+        if (map.getPlayer().getCell().getItem() != null){
             alertLabel.setText("Press E!");
         }
         else {
@@ -209,7 +208,7 @@ public class Main extends Application {
 
     private void checkLose() {
         Player player = map.getPlayer();
-        if (map.checkPlayerDeath(player)) {
+        if (player == null) {
             level = "/lose.txt";
             map = MapLoader.loadMap(level);
         }

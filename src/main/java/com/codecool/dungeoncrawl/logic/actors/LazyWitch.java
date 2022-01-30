@@ -33,7 +33,7 @@ public class LazyWitch extends Enemy{
     }
 
     @Override
-    protected void setHealth(int newHealth) {
+    public void setHealth(int newHealth) {
         health = newHealth;
     }
 }
