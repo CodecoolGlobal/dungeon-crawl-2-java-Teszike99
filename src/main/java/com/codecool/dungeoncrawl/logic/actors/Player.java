@@ -70,8 +70,6 @@ public class Player extends Actor {
         Actor enemy = nextCell.getActor();
          if (playerInventory.contains("key") && Boolean.FALSE.equals(checkDoorCondition(moveX, moveY))){
             openDoor(nextCell);
-        } else if (Boolean.FALSE.equals(checkDoorCondition(moveX, moveY))) {
-            return;
         } else if (checkEmptyField(typeOfTile)) {
             if (checkAttack(enemy)) {
                 attack(this, enemy);
@@ -79,7 +77,6 @@ public class Player extends Actor {
                 move(nextCell);
             }
         }
-
     }
 
     private boolean checkAttack(Actor enemy) {
@@ -103,7 +100,6 @@ public class Player extends Actor {
             playerInventory.remove("key");
             nextCell.setType(CellType.OPENDOOR);
         }
-
     }
 
 
@@ -120,7 +116,6 @@ public class Player extends Actor {
             return null;
         }
     }
-
 }
 
 
