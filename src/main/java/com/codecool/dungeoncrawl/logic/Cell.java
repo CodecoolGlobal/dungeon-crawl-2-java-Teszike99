@@ -23,9 +23,6 @@ public class Cell implements Drawable {
         return type;
     }
 
-    public GameMap getGameMap() {
-        return gameMap;
-    }
 
     public void setType(CellType type) {
         this.type = type;
@@ -55,8 +52,17 @@ public class Cell implements Drawable {
         return this.door;
     }
 
+
+
     public Cell getNeighbor(int dx, int dy) {
-        return gameMap.getCell(x + dx, y + dy);
+        if (x + dx > 0 && y +dy > 0 &&
+            x + dx < gameMap.getWidth() &&
+            y + dy < gameMap.getHeight()) {
+            return gameMap.getCell(x + dx, y + dy);
+        }else{
+            return null;
+        }
+
     }
 
     @Override

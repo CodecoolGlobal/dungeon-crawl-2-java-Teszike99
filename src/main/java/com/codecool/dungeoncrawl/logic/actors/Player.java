@@ -74,7 +74,7 @@ public class Player extends Actor {
             return;
         } else if (checkEmptyField(typeOfTile)) {
             if (checkAttack(enemy)) {
-                attack(enemy);
+                attack(this, enemy);
             }else{
                 move(nextCell);
             }
@@ -85,6 +85,7 @@ public class Player extends Actor {
     private boolean checkAttack(Actor enemy) {
         return enemy instanceof Enemy;
     }
+
 
     private Boolean checkDoorCondition(int moveX, int moveY){
         Door door = this.getCell().getNeighbor(moveX, moveY).getDoor();
@@ -103,14 +104,6 @@ public class Player extends Actor {
             nextCell.setType(CellType.OPENDOOR);
         }
 
-    }
-
-    public Boolean checkItem(){
-        Cell actualCell = this.getCell();
-        if(actualCell.getItem() != null){
-                return true;
-            }
-        return false;
     }
 
 

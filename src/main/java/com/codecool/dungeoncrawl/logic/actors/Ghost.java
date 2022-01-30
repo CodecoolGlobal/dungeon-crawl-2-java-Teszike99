@@ -14,6 +14,10 @@ public class Ghost extends Enemy{
         health = 10;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     @Override
     public String getTileName() {
         return "ghost";
@@ -23,12 +27,12 @@ public class Ghost extends Enemy{
     public void move() {
         getPositions();
         Cell nextCell = this.getCell().getNeighbor(moveX, moveY);
-        if (checkAttack(nextCell.getActor())){
-            attack(this);
-        }else{
+        Actor attacked = nextCell.getActor();
+        if (checkAttack(attacked)) {
+            attack(this, attacked);
+        } else if (!(checkEnemy(attacked))) {
             move(nextCell);
         }
-
     }
 
     @Override
@@ -42,12 +46,11 @@ public class Ghost extends Enemy{
     }
 
     @Override
-    protected void setHealth(int newHealth) {
+    public void setHealth(int newHealth) {
         health = newHealth;
     }
 
     private void getPositions() {
-        player = this.getCell().getGameMap().getPlayer();
         int differenceX = this.getX() - player.getX();
         int differenceY= this.getY() - player.getY();
         if (changeToPositive(differenceX) < changeToPositive(differenceY)){
@@ -58,7 +61,6 @@ public class Ghost extends Enemy{
             moveX = differenceX < 0 ? 1 : -1;
         }
     }
-
 
     private int changeToPositive(int diff){
         if (diff < 0){
