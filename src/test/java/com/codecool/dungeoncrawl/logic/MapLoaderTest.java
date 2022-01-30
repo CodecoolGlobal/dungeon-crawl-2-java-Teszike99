@@ -11,6 +11,7 @@ public class MapLoaderTest {
     @Test
     void loadMap_loadsMap() {
         GameMap map = MapLoader.loadMap("/map.txt");
+
         assertNotNull(map);
     }
 }

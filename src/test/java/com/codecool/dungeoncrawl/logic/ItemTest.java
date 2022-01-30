@@ -48,7 +48,9 @@ public class ItemTest {
     @Test
     void openDoor_givesBackItsName(){
         OpenedDoor door = new OpenedDoor(gameMap.getCell(2,2));
+        gameMap.getCell(2,2).setType(CellType.OPENDOOR);
 
+        assertEquals("openDoor", gameMap.getCell(2,2).getTileName());
         assertEquals("openDoor", door.getTileName());
     }
 
@@ -67,6 +69,7 @@ public class ItemTest {
         Potion potion = new Potion(gameMap.getCell(2,2));
 
 
+        assertEquals(potion, gameMap.getCell(2,2).getItem());
         assertEquals("cola", potion.getTileName());
     }
 }

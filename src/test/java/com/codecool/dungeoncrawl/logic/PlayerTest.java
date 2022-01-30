@@ -76,4 +76,10 @@ public class PlayerTest {
         assertEquals("player", player.getTileName());
         assertEquals(CellType.OPENDOOR, gameMap.getCell(1,2).getType());
     }
+
+    @Test
+    void returnPlayerName_giveBackGoodName(){
+
+        assertEquals("player", player.getTileName());
+    }
 }
