@@ -1,9 +1,14 @@
 package com.codecool.dungeoncrawl.model;
 
+import com.codecool.dungeoncrawl.logic.CellType;
+import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class GameState extends BaseModel {
     private Date savedAt;
@@ -58,4 +63,5 @@ public class GameState extends BaseModel {
     public void setGameStateId(int gameStateId) {
         this.gameStateId = gameStateId;
     }
+
 }

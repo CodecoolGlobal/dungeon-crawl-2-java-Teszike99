@@ -1,12 +1,19 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.Items.Item;
+import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Enemy;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -16,19 +23,37 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.*;
+
+import static com.codecool.dungeoncrawl.logic.MapLoader.createMapFromDb;
 
 public class Display {
 
-    public static Canvas createCanvas(Stage primaryStage, GameMap map) {
-        Label alertLabel = new Label();
-        Label healthLabel = new Label();
-        Label inventoryLabel = new Label();
-        Canvas canvas = new Canvas(
+    Button saveButton = new Button("Save Game");
+    Button loadButton = new Button("Load Game");
+    Label alertLabel = new Label();
+    Label healthLabel = new Label();
+    Label inventoryLabel = new Label();
+    Canvas canvas;
+    GraphicsContext context;
+    GameMap map;
+    GameDatabaseManager dbManager;
+    String level;
+
+    public Display(GameMap map, GameDatabaseManager dbManager, String level) {
+        this.dbManager = dbManager;
+        this.map = map;
+        this.level = level;
+        canvas = new Canvas(
                 map.getWidth() * Tiles.TILE_WIDTH,
                 map.getHeight() * Tiles.TILE_WIDTH);
-        GraphicsContext context = canvas.getGraphicsContext2D();
-        Button saveButton = new Button("Save Game");
-        Button loadButton = new Button("Load Game");
+        context = canvas.getGraphicsContext2D();
+    }
+
+    public void createCanvas(Stage primaryStage) {
+
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
@@ -55,20 +80,19 @@ public class Display {
         Scene scene = new Scene(borderPane);
         scene.getStylesheets().add("app.css");
         primaryStage.setScene(scene);
-        refresh(map, context, canvas, healthLabel, inventoryLabel, alertLabel);
+        refresh(map);
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setScene(scene);
-        refresh(map, context, canvas, healthLabel, inventoryLabel, alertLabel);
+        refresh(map);
         scene.setOnKeyPressed(this::onKeyPressed);
         scene.setOnKeyReleased(this::onKeyReleased);
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
 
-        return canvas;
     }
 
-    private static void refresh(GameMap map, GraphicsContext context, Canvas canvas, Label healthLabel, Label inventoryLabel, Label alertLabel) {
+    public void refresh(GameMap map) {
         changeMap();
         checkLose();
         checkWin();
@@ -123,7 +147,7 @@ public class Display {
         }
     }
 
-    public static void displaySaveButton() {
+    public void displaySaveButton() {
         TextField nameInput = new TextField();
         Button save = new Button("Save");
         Button cancel = new Button("Cancel");
@@ -137,6 +161,63 @@ public class Display {
         saveStage.show();
         save.setOnAction(e -> saveGame(saveStage, nameInput));
         cancel.setOnAction(e -> saveStage.close());
+    }
+
+    private void saveGame(Stage saveStage, TextField nameInput) {
+        String saveName = nameInput.getText();
+        saveStage.close();
+        Player player = map.getPlayer();
+        List<Item> items = map.getItemList();
+        List<Enemy> enemies = map.getEnemies();
+        if (checkPlayerName(saveName)) {
+            dbManager.update(player,level,saveName, enemies, items);
+        }
+        else {
+            dbManager.save(player, level, saveName, enemies, items);
+        }
+    }
+
+    public void LoadGame() {
+        Optional<String> choice = getSaveChoiceFromUser();
+        String loadedName = choice.get();
+        dbManager.load(loadedName);
+        map = createMapFromDb(dbManager);
+        refresh(map);
+    }
+
+    public Optional<String> getSaveChoiceFromUser() {
+        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>();
+        choiceDialog.setTitle("Load Game");
+        choiceDialog.getItems().addAll(dbManager.loadChoices());
+        choiceDialog.setHeaderText("Choose a save!");
+        choiceDialog.getDialogPane().setContentText("Player name: ");
+        Optional<String> choice = choiceDialog.showAndWait();
+        return choice;
+    }
+
+    private boolean checkPlayerName (String playerName) {
+        return dbManager.loadChoices().contains(playerName);
+    }
+
+    public void changeMap() {
+        if (map.getPlayer().getCell().getType() == CellType.STAIRS){
+            level = "/map2.txt";
+            map = MapLoader.loadMap(level);
+        }
+    }
+
+    private void checkLose() {
+        if (map.getPlayer() != null){
+            level = "/lose.txt";
+            map = MapLoader.loadMap(level);
+        }
+    }
+
+    private void checkWin() {
+        if (map.getPlayer().getCell().getType() == CellType.GOAL){
+            level = "/win.txt";
+            map = MapLoader.loadMap(level);
+        }
     }
 
 

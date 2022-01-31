@@ -35,25 +35,20 @@ import static com.codecool.dungeoncrawl.logic.MapLoader.createMapFromDb;
 public class Main extends Application {
     String level = "/map.txt";
     GameMap map = MapLoader.loadMap(level);
-    Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
-    GraphicsContext context = canvas.getGraphicsContext2D();
-    Label alertLabel = new Label();
-    Label healthLabel = new Label();
-    Label inventoryLabel = new Label();
-    Button saveButton = new Button("Save Game");
-    Button loadButton = new Button("Load Game");
     GameDatabaseManager dbManager;
+    Display display;
     public static void main(String[] args) {
         launch(args);
     }
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         setupDbManager();
-        canvas = Display.createCanvas(primaryStage, map);
+        display = new Display(map, dbManager, level);
+        display.createCanvas(primaryStage);
     }
+
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
@@ -69,22 +64,22 @@ public class Main extends Application {
             case UP:
                 map.getPlayer().move(0, -1);
                 map.moveEnemies();
-                refresh();
+                display.refresh(map);
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
                 map.moveEnemies();
-                refresh();
+                display.refresh(map);
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
                 map.moveEnemies();
-                refresh();
+                display.refresh(map);
                 break;
             case RIGHT:
                 map.getPlayer().move(1, 0);
                 map.moveEnemies();
-                refresh();
+                display.refresh(map);
                 break;
         }
     }
@@ -99,87 +94,6 @@ public class Main extends Application {
         }
     }
 
-
-    private void refresh() {
-        changeMap();
-        checkLose();
-        checkWin();
-        context.setFill(Color.BLACK);
-        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        int centerX = (int) (canvas.getWidth() / (Tiles.TILE_WIDTH * 2));
-        int centerY = (int) (canvas.getHeight() / (Tiles.TILE_WIDTH * 2));
-        int offsetX = 0;
-        int offsetY = 0;
-        if (map.getPlayer().getX() > centerX) {
-            offsetX = map.getPlayer().getX() - centerX;
-        }
-        if (map.getPlayer().getY() > centerY) {
-            offsetY = map.getPlayer().getY() - centerY;
-        }
-        for (int x = 0; x + offsetX < map.getWidth(); x++) {
-            for (int y = 0; y + offsetY < map.getHeight(); y++) {
-                Cell cell = map.getCell(x + offsetX, y + offsetY);
-                if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                } else if (cell.getDoor() != null) {
-                    Tiles.drawTile(context, cell.getDoor(), x, y);
-                } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), x, y);
-                } else {
-                    Tiles.drawTile(context, cell, x, y);
-                }
-            }
-        }
-        healthLabel.setText("" + map.getPlayer().getHealth());
-
-        LinkedList playerInventory = map.getPlayer().getPlayerInventory();
-        int itemCounter = 0;
-        String newLabelText = "";
-        for (Object item : playerInventory) {
-            itemCounter += 1;
-            if (itemCounter == 1) {
-                newLabelText += "\n" + item.toString();
-                inventoryLabel.setText(newLabelText);
-            } else {
-                itemCounter += 1;
-                newLabelText += "\n" + item;
-                inventoryLabel.setText(newLabelText);
-            }
-        }
-
-        if (map.getPlayer().getCell().getItem() != null){
-            alertLabel.setText("Press E!");
-        }
-        else {
-            alertLabel.setText("");
-        }
-    }
-
-    private void checkWin() {
-        Player player = map.getPlayer();
-        if (player.getCell().getType() == CellType.GOAL){
-            level = "/win.txt";
-            map = MapLoader.loadMap(level);
-        }
-    }
-
-
-    private void changeMap() {
-        if (Objects.equals(map.getPlayer().getCell().getTileName(), "stairs")) {
-            level = "/map2.txt";
-            map = MapLoader.loadMap(level);
-        }
-    }
-
-    private void checkLose() {
-        Player player = map.getPlayer();
-        if (player == null) {
-            level = "/lose.txt";
-            map = MapLoader.loadMap(level);
-        }
-    }
-
-
     private void setupDbManager() {
         dbManager = new GameDatabaseManager();
         try {
@@ -187,59 +101,6 @@ public class Main extends Application {
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
         }
-    }
-
-    public void displaySaveButton() {
-        TextField nameInput = new TextField();
-        Button save = new Button("Save");
-        Button cancel = new Button("Cancel");
-        VBox layout = new VBox(2);
-        layout.getChildren().addAll(nameInput, save, cancel);
-        Scene saveScene = new Scene(layout, 350, 150);
-        Stage saveStage = new Stage();
-        saveScene.getStylesheets().add("app.css");
-        saveStage.setTitle("Save game");
-        saveStage.setScene(saveScene);
-        saveStage.show();
-        save.setOnAction(e -> saveGame(saveStage, nameInput));
-        cancel.setOnAction(e -> saveStage.close());
-    }
-
-    private void saveGame(Stage saveStage, TextField nameInput) {
-        String saveName = nameInput.getText();
-        saveStage.close();
-        Player player = map.getPlayer();
-        List<Item> items = map.getItemList();
-        List<Enemy> enemies = map.getEnemies();
-        if (checkPlayerName(saveName)) {
-            dbManager.update(player,level,saveName, enemies, items);
-        }
-        else {
-            dbManager.save(player, level, saveName, enemies, items);
-        }
-    }
-
-    public void LoadGame() {
-        Optional<String> choice = getSaveChoiceFromUser();
-        String loadedName = choice.get();
-        dbManager.load(loadedName);
-        map = createMapFromDb(dbManager);
-        refresh();
-    }
-
-
-    public Optional<String> getSaveChoiceFromUser() {
-        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>();
-        choiceDialog.setTitle("Load Game");
-        choiceDialog.getItems().addAll(dbManager.loadChoices());
-        choiceDialog.setHeaderText("Choose a save!");
-        choiceDialog.getDialogPane().setContentText("Player name: ");
-        Optional<String> choice = choiceDialog.showAndWait();
-        return choice;
-    }
-
-    public boolean checkPlayerName (String playerName) {
-        return dbManager.loadChoices().contains(playerName);
     }
 
     private void exit() {
