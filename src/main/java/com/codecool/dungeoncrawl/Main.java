@@ -33,65 +33,21 @@ import static com.codecool.dungeoncrawl.logic.MapLoader.createMapFromDb;
 
 
 public class Main extends Application {
-    String level = "/map.txt";
-    GameMap map = MapLoader.loadMap(level);
     GameDatabaseManager dbManager;
     Display display;
+
+
     public static void main(String[] args) {
         launch(args);
     }
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
+        String level = "/map.txt";
+        GameMap map = MapLoader.loadMap(level);
         setupDbManager();
         display = new Display(map, dbManager, level);
         display.createCanvas(primaryStage);
-    }
-
-
-    private void onKeyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
-            case E:
-                Item item = map.getPlayer().pickUpItem();
-                List<Item> itemList = map.getItemList();
-                itemList.remove(item);
-                map.setItemList(itemList);
-                break;
-            case R:
-                map = MapLoader.loadMap("/map.txt");
-                break;
-            case UP:
-                map.getPlayer().move(0, -1);
-                map.moveEnemies();
-                display.refresh(map);
-                break;
-            case DOWN:
-                map.getPlayer().move(0, 1);
-                map.moveEnemies();
-                display.refresh(map);
-                break;
-            case LEFT:
-                map.getPlayer().move(-1, 0);
-                map.moveEnemies();
-                display.refresh(map);
-                break;
-            case RIGHT:
-                map.getPlayer().move(1, 0);
-                map.moveEnemies();
-                display.refresh(map);
-                break;
-        }
-    }
-
-    private void onKeyReleased(KeyEvent keyEvent) {
-        KeyCombination exitCombinationMac = new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
-        KeyCombination exitCombinationWin = new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN);
-        if (exitCombinationMac.match(keyEvent)
-                || exitCombinationWin.match(keyEvent)
-                || keyEvent.getCode() == KeyCode.ESCAPE) {
-            exit();
-        }
     }
 
     private void setupDbManager() {
@@ -103,12 +59,4 @@ public class Main extends Application {
         }
     }
 
-    private void exit() {
-        try {
-            stop();
-        } catch (Exception e) {
-            System.exit(1);
-        }
-        System.exit(0);
-    }
 }

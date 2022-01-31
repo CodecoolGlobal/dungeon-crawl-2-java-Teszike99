@@ -55,7 +55,7 @@ public class Skeleton extends Enemy {
             int randomY = rand.nextInt(-1,2);
             Cell skeletonCell = this.getCell();
             randomMove = skeletonCell.getNeighbor(randomX, randomY);
-            movingPossible = moveValidation(randomMove.getType(), randomMove.getActor());
+            movingPossible = randomMove != null && moveValidation(randomMove.getType(), randomMove.getActor());
         }
         return randomMove;
     }
