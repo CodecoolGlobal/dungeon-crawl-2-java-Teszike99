@@ -71,11 +71,15 @@ public class GameDatabaseManager {
     }
 
 
-    public void load(String loadedName){
-        this.loadedPlayer = playerDao.get(loadedName);
-        this.loadedGameState = gameStateDao.get(loadedPlayer.getId());
-        this.loadedEnemies = enemyDao.getAll(loadedGameState.getId());
-        this.loadedItems = itemDao.getAll(loadedGameState.getId());
+    public void load(String loadedName) throws NullPointerException{
+        try {
+            this.loadedPlayer = playerDao.get(loadedName);
+            this.loadedGameState = gameStateDao.get(loadedPlayer.getId());
+            this.loadedEnemies = enemyDao.getAll(loadedGameState.getId());
+            this.loadedItems = itemDao.getAll(loadedGameState.getId());
+        }catch (NullPointerException e){
+            throw new NullPointerException();
+        }
     }
 
     public PlayerModel getLoadedPlayer() {
