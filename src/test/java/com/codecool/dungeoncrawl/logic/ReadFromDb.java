@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 
 import static com.codecool.dungeoncrawl.logic.MapLoader.createMapFromDb;
+import static com.codecool.dungeoncrawl.logic.MapLoader.loadMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ReadFromDb {
@@ -21,8 +22,8 @@ public class ReadFromDb {
         }
         dbManager.load("ákos");
 
-        assertNotNull(createMapFromDb(dbManager));
+        assertDoesNotThrow(()-> dbManager.load("ákos"));
+        assertNotNull(MapLoader.createMapFromDb(dbManager));
+
     }
-
-
 }

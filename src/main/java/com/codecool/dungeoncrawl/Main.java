@@ -2,13 +2,19 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.Items.Item;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import javafx.application.Application;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.util.*;
 
+import static jdk.jfr.internal.consumer.EventLog.stop;
 
 
 public class Main extends Application {
@@ -37,5 +43,8 @@ public class Main extends Application {
             System.out.println("Cannot connect to database.");
         }
     }
+
+
+
 
 }

@@ -151,6 +151,59 @@ public class Display {
         }
     }
 
+    private void onKeyPressed(KeyEvent keyEvent) {
+        switch (keyEvent.getCode()) {
+            case E:
+                Item item = map.getPlayer().pickUpItem();
+                List<Item> itemList = map.getItemList();
+                itemList.remove(item);
+                map.setItemList(itemList);
+                break;
+            case R:
+                map = MapLoader.loadMap("/map.txt");
+                break;
+            case UP:
+                map.getPlayer().move(0, -1);
+                map.moveEnemies();
+                refresh(map);
+                break;
+            case DOWN:
+                map.getPlayer().move(0, 1);
+                map.moveEnemies();
+                refresh(map);
+                break;
+            case LEFT:
+                map.getPlayer().move(-1, 0);
+                map.moveEnemies();
+                refresh(map);
+                break;
+            case RIGHT:
+                map.getPlayer().move(1, 0);
+                map.moveEnemies();
+                refresh(map);
+                break;
+        }
+    }
+
+    private void onKeyReleased(KeyEvent keyEvent) {
+        KeyCombination exitCombinationMac = new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
+        KeyCombination exitCombinationWin = new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN);
+        if (exitCombinationMac.match(keyEvent)
+                || exitCombinationWin.match(keyEvent)
+                || keyEvent.getCode() == KeyCode.ESCAPE) {
+            exit();
+        }
+    }
+
+    private void exit() {
+        try {
+            stop();
+        } catch (Exception e) {
+            System.exit(1);
+        }
+        System.exit(0);
+    }
+
     public void displaySaveButton() {
         TextField nameInput = new TextField();
         Button save = new Button("Save");
@@ -222,59 +275,6 @@ public class Display {
             level = "/win.txt";
             map = MapLoader.loadMap(level);
         }
-    }
-
-    private void onKeyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
-            case E:
-                Item item = map.getPlayer().pickUpItem();
-                List<Item> itemList = map.getItemList();
-                itemList.remove(item);
-                map.setItemList(itemList);
-                break;
-            case R:
-                map = MapLoader.loadMap("/map.txt");
-                break;
-            case UP:
-                map.getPlayer().move(0, -1);
-                map.moveEnemies();
-                refresh(map);
-                break;
-            case DOWN:
-                map.getPlayer().move(0, 1);
-                map.moveEnemies();
-                refresh(map);
-                break;
-            case LEFT:
-                map.getPlayer().move(-1, 0);
-                map.moveEnemies();
-                refresh(map);
-                break;
-            case RIGHT:
-                map.getPlayer().move(1, 0);
-                map.moveEnemies();
-                refresh(map);
-                break;
-        }
-    }
-
-    private void onKeyReleased(KeyEvent keyEvent) {
-        KeyCombination exitCombinationMac = new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
-        KeyCombination exitCombinationWin = new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN);
-        if (exitCombinationMac.match(keyEvent)
-                || exitCombinationWin.match(keyEvent)
-                || keyEvent.getCode() == KeyCode.ESCAPE) {
-            exit();
-        }
-    }
-
-    private void exit() {
-        try {
-            stop();
-        } catch (Exception e) {
-            System.exit(1);
-        }
-        System.exit(0);
     }
 
 
